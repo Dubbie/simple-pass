@@ -1,66 +1,131 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Simple Pass
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This project is made to help manage your passwords online securely.
 
-## About Laravel
+## Getting Started
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Prerequisites
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+What things you need to install the software and how to install them
 
-## Learning Laravel
+```
+Docker
+Git
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Installing
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+A step by step series of examples that tell you how to get a development env running
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+To install Docker, please follow the instructions found here:
+https://docs.docker.com/desktop/
 
-## Laravel Sponsors
+Install Git from the following link: https://git-scm.com/downloads
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+After both Docker and Git have been installed, clone the repository.
 
-### Premium Partners
+```
+git clone https://github.com/Dubbie/simple-pass.git
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+Copy the `.env.example` file and rename it to `.env`
 
-## Contributing
+```
+cp .env.example .env
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Install dependencies using Docker
 
-## Code of Conduct
+```
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    laravelsail/php82-composer:latest \
+    composer install --ignore-platform-reqs
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Run the container by using the following command
 
-## Security Vulnerabilities
+```
+./vendor/bin/sail up -d
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+After this, you will have to run a few commands which will accomplish the following:
 
-## License
+-   Generate an application encryption key
+-   Run the required migrations to set up the database
+-   Install required Node modules to develop with
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```
+./vendor/bin/sail artisan key:generate
+./vendor/bin/sail artisan migrate
+./vendor/bin/sail npm install
+```
+
+Setup is now complete, you can run the following code to start Vite to develop something awesome!
+
+```
+./vendor/bin/sail npm run dev
+```
+
+#### Optional step
+
+To make running commands smoother you can save the following alias:
+
+```
+alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
+```
+
+This setting depends on your OS of choice, so it may vary. After this, you can use the above commands using only `sail` you don't have to write the full path of `./vendor/bin/sail`.
+
+## Deployment
+
+To deploy this project to a production environment, you can follow the steps below. Please note that these steps may vary depending on your hosting provider.
+
+Install the composer dependencies by running the following command.
+
+```
+composer install --no-dev --optimize-autoloader
+```
+
+Build the assets required.
+
+```
+npm install
+```
+
+Move the files to the host, be careful not to put everything into the `public_html` folder as this is a security breach, everyone can access your data.
+
+Run the following command to create an encryption key.
+
+```
+cp .env.example .env
+php artisan key:generate
+```
+
+Make sure to fill out the database settings, mail settings and base admin user settings in the `.env` file.
+
+Run the migrations to prepare the database.
+
+```
+php artisan migrate --force
+```
+
+The application should now be up and running in your production enviroment.
+
+## Built With
+
+-   [Laravel](https://laravel.com/docs/) - The web framework used
+-   [Vue](https://vuejs.org/guide/introduction.html) - Frontend JavaScript framework
+-   [Inertia.js](https://inertiajs.com/) - Glue that connects Laravel with Vue
+
+## Versioning
+
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
+
+## Authors
+
+-   **Mihó Dániel** - [Dubbie](https://github.com/Dubbie)
