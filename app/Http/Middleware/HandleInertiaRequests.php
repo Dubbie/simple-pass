@@ -43,7 +43,7 @@ class HandleInertiaRequests extends Middleware
                 'banner' => fn () => $request->session()->get('banner'),
                 'bannerStyle' => fn () => $request->session()->get('bannerStyle')
             ],
-            'folders' => $request->user()->folders
+            'folders' => $request->user()->getRootFolders()
         ]);
     }
 }

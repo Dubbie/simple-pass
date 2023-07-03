@@ -29,6 +29,7 @@ class FolderController extends Controller
         $validatedData = $request->validated();
         $folderDTO = new FolderDTO();
         $folderDTO->setName($validatedData['name']);
+        $folderDTO->setParentId($validatedData['parent_id']);
         $folderDTO->setUserId(Auth::id());
 
         $folder = $this->folderService->createFolder($folderDTO);

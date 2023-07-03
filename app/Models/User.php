@@ -47,4 +47,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Folder::class);
     }
+
+    public function getRootFolders()
+    {
+        return $this->folders()->root()->get();
+    }
 }

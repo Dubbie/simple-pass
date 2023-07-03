@@ -23,7 +23,9 @@ class StoreFolderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required'
+            'name' => 'required',
+            'description' => 'nullable',
+            'parent_id' => 'nullable'
         ];
     }
 }

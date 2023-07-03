@@ -5,6 +5,7 @@ import { useForm } from "@inertiajs/vue3";
 import InputLabel from "@/Components/Shared/InputLabel.vue";
 import TextInput from "@/Components/Shared/TextInput.vue";
 import PrimaryButton from "@/Components/Shared/PrimaryButton.vue";
+import SelectInput from "./Shared/SelectInput.vue";
 
 const props = defineProps({
     show: {
@@ -15,6 +16,7 @@ const props = defineProps({
 
 const form = useForm({
     name: "",
+    parent_id: "",
 });
 
 const emit = defineEmits(["close"]);
@@ -44,6 +46,24 @@ const handleSubmission = () => {
                     autocomplete="off"
                     v-model="form.name"
                 />
+            </div>
+
+            <div class="mt-2">
+                <InputLabel for="parent_id" value="Parent folder" />
+                <SelectInput
+                    id="parent_id"
+                    v-model="form.parent_id"
+                    class="mt-1"
+                >
+                    <option value="">None</option>
+                    <option
+                        v-for="folder in $page.props.folders"
+                        :key="folder.id"
+                        :value="folder.id"
+                    >
+                        {{ folder.name }}
+                    </option>
+                </SelectInput>
             </div>
 
             <div class="mt-4">

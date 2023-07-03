@@ -82,6 +82,29 @@ const handleNewFolder = () => {
                                         </template>
                                         <span>{{ folder.name }}</span>
                                     </SidebarLink>
+
+                                    <span
+                                        v-if="folder.sub_folders.length > 0"
+                                        class="block ml-10"
+                                    >
+                                        <template
+                                            v-for="subFolder in folder.sub_folders"
+                                        >
+                                            <LinkButton
+                                                color="secondary"
+                                                class="text-xs"
+                                                :href="
+                                                    route(
+                                                        'folders.show',
+                                                        subFolder
+                                                    )
+                                                "
+                                                >{{
+                                                    subFolder.name
+                                                }}</LinkButton
+                                            >
+                                        </template>
+                                    </span>
                                 </li>
                             </template>
                         </template>
