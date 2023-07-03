@@ -36,7 +36,7 @@ const submitSearch = () => {
             </button>
 
             <form @prevent.submit="submitSearch" class="flex relative flex-1">
-                <label for="search-field" class="sr-only">Keresés</label>
+                <label for="search-field" class="sr-only">Search</label>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -57,7 +57,7 @@ const submitSearch = () => {
                     v-model="form.query"
                     class="bg-gray-900 block pr-0 pl-6 text-gray-400 border-0 w-full h-full md:text-sm focus:ring-0"
                     disabled
-                    placeholder="Keresés..."
+                    placeholder="Search..."
                 />
             </form>
         </div>
