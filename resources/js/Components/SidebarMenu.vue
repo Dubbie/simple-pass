@@ -75,7 +75,7 @@ const handleNewFolder = () => {
                                     >
                                         <template #icon>
                                             <span
-                                                class="bg-gray-800 inline-flex items-center justify-center h-5 w-5 rounded border border-gray-700 text-gray-500"
+                                                class="bg-gray-800 inline-flex items-center justify-center h-5 w-5 rounded border border-gray-700 text-gray-500 font-semibold text-xs"
                                             >
                                                 {{ folder.name.substr(0, 1) }}
                                             </span>
