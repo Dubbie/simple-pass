@@ -10,6 +10,6 @@ class Folder extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'user_id'
+        'name', 'user_id', 'description', 'parent_id'
     ];
 }
