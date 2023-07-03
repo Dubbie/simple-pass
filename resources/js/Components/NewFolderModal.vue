@@ -35,7 +35,7 @@ const handleSubmission = () => {
 </script>
 
 <template>
-    <Modal :show="show" max-width="lg" @close="$emit('close')">
+    <Modal :show="show" max-width="sm" @close="$emit('close')">
         <form @submit.prevent="handleSubmission" class="p-4">
             <ModalTitle>New Folder</ModalTitle>
 
