@@ -12,11 +12,14 @@ const props = defineProps({
         type: Boolean,
         required: true,
     },
+    parentId: {
+        type: Number,
+    },
 });
 
 const form = useForm({
     name: "",
-    parent_id: "",
+    parent_id: props.parentId ? props.parentId.toString() : "",
 });
 
 const emit = defineEmits(["close"]);
@@ -57,7 +60,7 @@ const handleSubmission = () => {
                 >
                     <option value="">None</option>
                     <option
-                        v-for="folder in $page.props.folders"
+                        v-for="folder in $page.props.folders.all"
                         :key="folder.id"
                         :value="folder.id"
                     >

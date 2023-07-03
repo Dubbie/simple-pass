@@ -64,10 +64,12 @@ const handleNewFolder = () => {
                         <li>
                             <SidebarHeader>Your folders</SidebarHeader>
                         </li>
-                        <p v-if="$page.props.folders.length == 0">No Folders</p>
+                        <p v-if="$page.props.folders.roots.length == 0">
+                            No Folders
+                        </p>
                         <template v-else>
                             <template
-                                v-for="folder in $page.props.folders"
+                                v-for="folder in $page.props.folders.roots"
                                 :key="folder.id"
                             >
                                 <li>

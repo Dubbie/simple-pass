@@ -3,6 +3,8 @@ import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 import PageTitle from "@/Components/Shared/PageTitle.vue";
 import ModalTitle from "@/Components/Shared/ModalTitle.vue";
 import DangerButton from "@/Components/Shared/DangerButton.vue";
+import PrimaryButton from "@/Components/Shared/PrimaryButton.vue";
+import NewFolderModal from "@/Components/NewFolderModal.vue";
 import LinkButton from "@/Components/Shared/LinkButton.vue";
 import Modal from "@/Components/Shared/Modal.vue";
 import { Head, router } from "@inertiajs/vue3";
@@ -17,6 +19,7 @@ const props = defineProps({
 
 const refs = {
     showDeleteModal: ref(false),
+    showNewFolderModal: ref(false),
 };
 
 const handleDelete = () => {
@@ -35,9 +38,14 @@ const handleDelete = () => {
         <template #header>
             <div class="flex justify-between items-center">
                 <PageTitle>{{ folder.name }}</PageTitle>
-                <div>
-                    <DangerButton @click="refs.showDeleteModal.value = true"
-                        >Delete</DangerButton
+                <div class="flex space-x-3">
+                    <PrimaryButton @click="refs.showNewFolderModal.value = true"
+                        >New folder</PrimaryButton
+                    >
+                    <LinkButton
+                        color="secondary"
+                        @click="refs.showDeleteModal.value = true"
+                        >Delete</LinkButton
                     >
                 </div>
             </div>
@@ -69,5 +77,11 @@ const handleDelete = () => {
                 </div>
             </div>
         </Modal>
+
+        <NewFolderModal
+            :show="refs.showNewFolderModal.value"
+            :parentId="folder.id"
+            @close="refs.showNewFolderModal.value = false"
+        />
     </SidebarLayout>
 </template>
