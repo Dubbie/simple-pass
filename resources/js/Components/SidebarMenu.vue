@@ -5,9 +5,15 @@ import Dropdown from "@/Components/Dropdown.vue";
 import DropdownLink from "@/Components/DropdownLink.vue";
 import SidebarHeader from "@/Components/Shared/SidebarHeader.vue";
 import LinkButton from "./Shared/LinkButton.vue";
+import NewFolderModal from "./NewFolderModal.vue";
+import { ref } from "vue";
+
+const refs = {
+    showNewFolderModal: ref(false),
+};
 
 const handleNewFolder = () => {
-    console.log("handleNewFolder");
+    refs.showNewFolderModal.value = true;
 };
 </script>
 
@@ -57,11 +63,31 @@ const handleNewFolder = () => {
                         <li>
                             <SidebarHeader>Your folders</SidebarHeader>
                         </li>
+                        <p v-if="$page.props.folders.length == 0">No Folders</p>
+                        <template v-else>
+                            <template
+                                v-for="folder in $page.props.folders"
+                                :key="folder.id"
+                            >
+                                <li>
+                                    <SidebarLink
+                                        :href="route('folders.show', folder)"
+                                    >
+                                        <template #icon>
+                                            <span
+                                                class="bg-gray-800 inline-flex items-center justify-center h-5 w-5 rounded border border-gray-700 text-gray-500"
+                                            >
+                                                {{ folder.name.substr(0, 1) }}
+                                            </span>
+                                        </template>
+                                        <span>{{ folder.name }}</span>
+                                    </SidebarLink>
+                                </li>
+                            </template>
+                        </template>
                         <li>
-                            <!-- Implement folders -->
-
                             <LinkButton @click="handleNewFolder"
-                                >New folder</LinkButton
+                                >+ New folder</LinkButton
                             >
                         </li>
                     </ul>
@@ -100,4 +126,9 @@ const handleNewFolder = () => {
             </ul>
         </div>
     </div>
+
+    <NewFolderModal
+        :show="refs.showNewFolderModal.value"
+        @close="refs.showNewFolderModal.value = false"
+    />
 </template>

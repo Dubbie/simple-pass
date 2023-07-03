@@ -39,6 +39,11 @@ class HandleInertiaRequests extends Middleware
                     'location' => $request->url(),
                 ]);
             },
+            'flash' => [
+                'banner' => fn () => $request->session()->get('banner'),
+                'bannerStyle' => fn () => $request->session()->get('bannerStyle')
+            ],
+            'folders' => $request->user()->folders
         ]);
     }
 }

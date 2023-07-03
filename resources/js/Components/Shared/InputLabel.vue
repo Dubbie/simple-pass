@@ -13,7 +13,7 @@ defineProps({
 
 <template>
     <label
-        class="flex text-sm font-medium leading-6 text-gray-900 items-center justify-between sm:justify-start"
+        class="flex text-sm font-medium leading-6 text-gray-200 items-center justify-between sm:justify-start"
     >
         <span v-if="value">{{ value }}</span>
         <span v-else><slot /></span>
