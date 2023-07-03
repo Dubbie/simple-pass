@@ -10,7 +10,7 @@ defineEmits(["update:modelValue"]);
 
 <template>
     <select
-        class="block w-full text-sm leading-6 rounded-md border-0 py-1.5 bg-gray-800 text-white shadow-sm ring-1 ring-inset ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+        class="block text-sm leading-6 rounded-md border-0 py-1.5 bg-gray-800 text-white shadow-sm ring-1 ring-inset ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
         ref="input"
