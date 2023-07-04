@@ -44,8 +44,8 @@ class HandleInertiaRequests extends Middleware
                 'bannerStyle' => fn () => $request->session()->get('bannerStyle')
             ],
             'folders' => [
-                'roots' => $request->user()->getRootFolders(),
-                'all' => $request->user()->folders
+                'roots' => $request->user() ? $request->user()->getRootFolders() : [],
+                'all' => $request->user() ? $request->user()->folders : [],
             ]
         ]);
     }
