@@ -37,20 +37,42 @@ class FolderController extends Controller
     }
 
     /**
-     * Display the folder.
+     * Display the specified folder.
      *
-     * @param Folder $folder The folder to be displayed.
-     * @return \Inertia\Response The rendered view.
+     * @param Folder $folder The folder to display.
+     * @return \Inertia\Response|\Illuminate\Http\RedirectResponse The response.
      */
     public function show(Folder $folder)
     {
+        // Check if the authenticated user has permission to view the folder
+        /** @var User $user */
+        $user = Auth::user();
+        if ($user->cannot('view', $folder)) {
+            return back()->with([
+                'banner' => 'Access denied.',
+                'bannerStyle' => 'danger',
+            ]);
+        }
+
+        // Render the folder show view
         return Inertia::render('Folder/Show', ['folder' => $folder->withEntries()]);
     }
 
     public function destroy(Folder $folder)
     {
+        // Check if the authenticated user has permission to delete the folder
+        /** @var User $user */
+        $user = Auth::user();
+        if ($user->cannot('delete', $folder)) {
+            return back()->with([
+                'banner' => 'Access denied.',
+                'bannerStyle' => 'danger',
+            ]);
+        }
+
         $parentFolder = $folder->parentFolder;
         $folder->delete();
+
         return redirect(route('folders.show', $parentFolder))->with('banner', 'Folder deleted successfully');
     }
 }

@@ -58,6 +58,15 @@ class PasswordEntryController extends Controller
      */
     public function update(UpdatePasswordEntryRequest $request, PasswordEntry $passwordEntry)
     {
+        /** @var User $user */
+        $user = Auth::user();
+        if ($user->cannot('update', $passwordEntry)) {
+            return back()->with([
+                'banner' => 'Access denied.',
+                'bannerStyle' => 'danger',
+            ]);
+        }
+
         // Validate the request data
         $validatedData = $request->validated();
 
@@ -86,6 +95,15 @@ class PasswordEntryController extends Controller
      */
     public function destroy(PasswordEntry $passwordEntry)
     {
+        /** @var User $user */
+        $user = Auth::user();
+        if ($user->cannot('delete', $passwordEntry)) {
+            return back()->with([
+                'banner' => 'Access denied.',
+                'bannerStyle' => 'danger',
+            ]);
+        }
+
         $passwordEntry->delete();
 
         // Redirect back with a success message
@@ -94,6 +112,15 @@ class PasswordEntryController extends Controller
 
     public function getPassword(PasswordEntry $passwordEntry)
     {
+        /** @var User $user */
+        $user = Auth::user();
+        if ($user->cannot('getPassword', $passwordEntry)) {
+            return back()->with([
+                'banner' => 'Access denied.',
+                'bannerStyle' => 'danger',
+            ]);
+        }
+
         return $this->encryptionService->decryptString($passwordEntry->password, config('app.encription_key'));
     }
 
@@ -111,6 +138,15 @@ class PasswordEntryController extends Controller
         /** @var User $user */
         $user = Auth::user();
         $passwordEntry = $user->passwordEntries()->find($validatedData['password_entry_id']);
+        $folder = $user->folders()->find($validatedData['folder_id']);
+
+        if ($user->cannot('view', $passwordEntry) || $user->cannot('view', $folder)) {
+            return back()->with([
+                'banner' => 'Access denied.',
+                'bannerStyle' => 'danger',
+            ]);
+        }
+
         $passwordEntry->moveToFolder($validatedData['folder_id']);
 
         // return redirect(route('folders.show', ['folder' => $passwordEntry->folder]))->with('banner', 'Entry moved successfully');

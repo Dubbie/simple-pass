@@ -25,9 +25,9 @@ class Folder extends Model
         return $this->belongsTo(Folder::class, 'parent_id');
     }
 
-    public function scopeRoot()
+    public function scopeRoot($query)
     {
-        return $this->whereNull('parent_id');
+        return $query->whereNull('parent_id');
     }
 
     public function entries()
