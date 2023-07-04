@@ -7,6 +7,7 @@ import TextInput from "@/Components/Shared/TextInput.vue";
 import TextareaInput from "@/Components/Shared/TextareaInput.vue";
 import PrimaryButton from "@/Components/Shared/PrimaryButton.vue";
 import { watch } from "vue";
+import PasswordInput from "./Shared/PasswordInput.vue";
 
 const props = defineProps({
     show: {
@@ -72,17 +73,15 @@ watch(props, (newData) => {
 
             <div class="mt-2">
                 <InputLabel for="new-password" value="Password" />
-                <TextInput
+                <PasswordInput
                     id="new-password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    autocomplete="new-password"
+                    :input-props="{ class: 'mt-1 block w-full' }"
                     v-model="form.password"
                 />
             </div>
 
             <div class="mt-2">
-                <InputLabel for="url" value="Url" />
+                <InputLabel for="url" value="URL" />
                 <TextInput
                     id="url"
                     type="text"

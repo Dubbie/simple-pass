@@ -10,6 +10,7 @@ import { watch } from "vue";
 import { getPasswordForEntry } from "@/common-functions";
 import { ref } from "vue";
 import { computed } from "vue";
+import PasswordInput from "@/Components/Shared/PasswordInput.vue";
 
 const props = defineProps({
     show: {
@@ -39,16 +40,6 @@ const handleSubmission = () => {
             emit("close");
         },
     });
-};
-
-const showPassword = ref(false);
-
-const passwordInputType = computed(() => {
-    return showPassword.value ? "text" : "password";
-});
-
-const toggleShowPassword = () => {
-    showPassword.value = !showPassword.value;
 };
 
 watch(props, (newData) => {
@@ -102,25 +93,15 @@ watch(props, (newData) => {
 
             <div class="mt-2">
                 <InputLabel for="new-password" value="Password" />
-                <div class="relative">
-                    <TextInput
-                        id="new-password"
-                        :type="passwordInputType"
-                        class="mt-1 block w-full"
-                        autocomplete="new-password"
-                        v-model="form.password"
-                    />
-
-                    <span
-                        class="cursor-pointer absolute top-0 py-2.5 pr-3 right-0 text-white text-xs font-bold"
-                        @click="toggleShowPassword"
-                        >{{ showPassword ? "Hide" : "Show" }}</span
-                    >
-                </div>
+                <PasswordInput
+                    id="new-password"
+                    :input-props="{ class: 'mt-1 block w-full' }"
+                    v-model="form.password"
+                />
             </div>
 
             <div class="mt-2">
-                <InputLabel for="url" value="Url" />
+                <InputLabel for="url" value="URL" />
                 <TextInput
                     id="url"
                     type="text"
