@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from "vue";
 import { Link } from "@inertiajs/vue3";
-import getSizeClasses from "@/common-functions";
+import { getSizeClasses } from "@/common-functions";
 
 const props = defineProps({
     size: {

@@ -44,7 +44,7 @@ class FolderController extends Controller
      */
     public function show(Folder $folder)
     {
-        return Inertia::render('Folder/Show', ['folder' => $folder]);
+        return Inertia::render('Folder/Show', ['folder' => $folder->withEntries()]);
     }
 
     public function destroy(Folder $folder)

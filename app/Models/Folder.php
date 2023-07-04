@@ -24,4 +24,14 @@ class Folder extends Model
     {
         return $this->whereNull('parent_id');
     }
+
+    public function entries()
+    {
+        return $this->hasMany(PasswordEntry::class);
+    }
+
+    public function withEntries()
+    {
+        return Folder::with('entries')->find($this->id);
+    }
 }

@@ -4,7 +4,7 @@
             <slot name="icon" />
         </span>
 
-        <p class="font-semibold text-sm mt-4">
+        <p class="font-semibold text-white text-sm mt-4">
             <slot name="headline" />
         </p>
 

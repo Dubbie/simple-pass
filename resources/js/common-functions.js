@@ -8,4 +8,8 @@ const getSizeClasses = (size) => {
     }[size];
 }
 
-export default getSizeClasses;
+const copyToClipboard = (text) => {
+  navigator.clipboard.writeText(text);
+};
+
+export {getSizeClasses, copyToClipboard};

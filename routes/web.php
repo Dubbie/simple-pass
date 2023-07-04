@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\FolderController;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\PasswordEntryController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/folders/{folder}/destroy', [FolderController::class, 'destroy'])->name('folders.destroy');
     Route::get('/folders/{folder}', [FolderController::class, 'show'])->name('folders.show');
     Route::post('/folders/store', [FolderController::class, 'store'])->name('folders.store');
+
+    Route::delete('/password-entries/{passwordEntry}/destroy', [PasswordEntryController::class, 'destroy'])->name('password-entries.destroy');
+    Route::post('/password-entries/{passwordEntry}/get-password', [PasswordEntryController::class, 'getPassword'])->name('password-entries.get-password');
+    Route::get('/password-entries/{passwordEntry}', [PasswordEntryController::class, 'show'])->name('password-entries.show');
+    Route::post('/password-entries/store', [PasswordEntryController::class, 'store'])->name('password-entries.store');
 });
 
 require __DIR__ . '/auth.php';

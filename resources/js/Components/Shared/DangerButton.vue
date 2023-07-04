@@ -1,5 +1,5 @@
 <script setup>
-import getSizeClasses from "@/common-functions";
+import { getSizeClasses } from "@/common-functions";
 import { computed } from "vue";
 
 const props = defineProps({
