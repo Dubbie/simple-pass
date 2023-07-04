@@ -27,7 +27,7 @@ const active = computed(() => {
             <span
                 class="bg-gray-800 inline-flex items-center justify-center h-5 w-5 rounded border border-gray-700 text-gray-500 font-semibold text-[0.625rem] group-hover:text-gray-200"
             >
-                {{ folder.name.substr(0, 1) }}
+                {{ folder.name.substr(0, 1).toUpperCase() }}
             </span>
         </template>
         <span>{{ folder.name }}</span>
