@@ -16,9 +16,12 @@ const active = computed(() => {
 
 <template>
     <SidebarLink
+        class="sidebar-folder-link"
         :href="route('folders.show', folder)"
         :active="active"
         :key="active"
+        :data-folder-id="props.folder.id"
+        :data-folder-name="props.folder.name"
     >
         <template #icon>
             <span

@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\DTOs\PasswordEntryDTO;
+use App\Http\Requests\MovePasswordEntryRequest;
 use App\Http\Requests\StorePasswordEntryRequest;
 use App\Http\Requests\UpdatePasswordEntryRequest;
 use App\Models\PasswordEntry;
 use App\Services\EncryptionService;
 use App\Services\EntryService;
+use Illuminate\Support\Facades\Auth;
 
 class PasswordEntryController extends Controller
 {
@@ -93,5 +95,25 @@ class PasswordEntryController extends Controller
     public function getPassword(PasswordEntry $passwordEntry)
     {
         return $this->encryptionService->decryptString($passwordEntry->password, config('app.encription_key'));
+    }
+
+    public function getEntry(int $entryId)
+    {
+        /** @var User $user */
+        $user = Auth::user();
+        return $user->passwordEntries()->where('id', $entryId)->first();
+    }
+
+    public function move(MovePasswordEntryRequest $request)
+    {
+        $validatedData = $request->validated();
+
+        /** @var User $user */
+        $user = Auth::user();
+        $passwordEntry = $user->passwordEntries()->find($validatedData['password_entry_id']);
+        $passwordEntry->moveToFolder($validatedData['folder_id']);
+
+        // return redirect(route('folders.show', ['folder' => $passwordEntry->folder]))->with('banner', 'Entry moved successfully');
+        return back()->with('banner', 'Entry moved successfully');
     }
 }

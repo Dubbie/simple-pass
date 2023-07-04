@@ -2,7 +2,7 @@
 import Modal from "@/Components/Shared/Modal.vue";
 import ModalTitle from "@/Components/Shared/ModalTitle.vue";
 import LinkButton from "@/Components/Shared/LinkButton.vue";
-import DangerButton from "@/Components/Shared/DangerButton.vue";
+import PrimaryButton from "@/Components/Shared/PrimaryButton.vue";
 
 const props = defineProps({
     show: {
@@ -26,7 +26,7 @@ defineEmits(["close"]);
                 <slot name="body" />
             </p>
             <div class="mt-4 flex items-center space-x-4">
-                <DangerButton @click="callback">Yes, delete</DangerButton>
+                <PrimaryButton @click="callback">Yes</PrimaryButton>
                 <LinkButton color="secondary" @click="$emit('close')"
                     >Cancel</LinkButton
                 >

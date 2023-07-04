@@ -52,4 +52,9 @@ class User extends Authenticatable
     {
         return $this->folders()->root()->get();
     }
+
+    public function passwordEntries()
+    {
+        return $this->hasMany(PasswordEntry::class);
+    }
 }

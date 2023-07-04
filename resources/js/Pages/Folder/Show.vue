@@ -1,22 +1,22 @@
 <script setup>
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 import PageTitle from "@/Components/Shared/PageTitle.vue";
-import ModalTitle from "@/Components/Shared/ModalTitle.vue";
-import DangerButton from "@/Components/Shared/DangerButton.vue";
 import PrimaryButton from "@/Components/Shared/PrimaryButton.vue";
 import NewFolderModal from "@/Components/NewFolderModal.vue";
 import LinkButton from "@/Components/Shared/LinkButton.vue";
-import Modal from "@/Components/Shared/Modal.vue";
 import { Head, router } from "@inertiajs/vue3";
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import NewPasswordEntryModal from "@/Components/NewPasswordEntryModal.vue";
 import EditPasswordEntryModal from "@/Components/EditPasswordEntryModal.vue";
 import EmptyState from "@/Components/Shared/EmptyState.vue";
 import DeleteModal from "@/Components/Shared/DeleteModal.vue";
+import ConfirmModal from "@/Components/Shared/ConfirmModal.vue";
 import PasswordEntryDetailsModal from "@/Components/PasswordEntryDetailsModal.vue";
 import DotDropdown from "@/Components/Shared/DotDropdown.vue";
 import SecondaryButton from "@/Components/Shared/SecondaryButton.vue";
 import DropdownLink from "@/Components/DropdownLink.vue";
+import draggable from "vuedraggable";
+import { watch } from "vue";
 
 const props = defineProps({
     folder: {
@@ -26,13 +26,17 @@ const props = defineProps({
 });
 
 const refs = {
+    entries: ref(props.folder.entries),
     showDeleteFolderModal: ref(false),
     showNewFolderModal: ref(false),
     showNewEntryModal: ref(false),
     showEditEntryModal: ref(false),
     showDeleteEntryModal: ref(false),
     showPasswordEntryDetailsModal: ref(false),
+    showMoveEntryModal: ref(false),
     selectedEntry: ref(null),
+    selectedEntryId: ref(null),
+    newFolder: ref(null),
 };
 
 const handleDeleteFolder = () => {
@@ -63,6 +67,44 @@ const hide = (refName) => {
     refs[refName].value = false;
     refs.selectedEntry.value = null;
 };
+
+const checkMove = async (evt) => {
+    refs.newFolder.value = null;
+    const hoveredAt = document.elementFromPoint(
+        evt.originalEvent.x,
+        evt.originalEvent.y
+    );
+
+    const folderLink = hoveredAt.closest(".sidebar-folder-link");
+
+    if (folderLink) {
+        refs.newFolder.value = {
+            id: folderLink.dataset.folderId,
+            name: folderLink.dataset.folderName,
+        };
+        refs.selectedEntryId.value = evt.item.dataset.entryId;
+        show("showMoveEntryModal");
+    }
+};
+
+const handleMoveEntry = () => {
+    router.post(
+        route("password-entries.move"),
+        {
+            password_entry_id: refs.selectedEntryId.value,
+            folder_id: refs.newFolder.value.id,
+        },
+        {
+            onSuccess: () => {
+                hide("showMoveEntryModal");
+            },
+        }
+    );
+};
+
+watch(props, (newProps) => {
+    refs.entries.value = newProps.folder.entries;
+});
 </script>
 
 <template>
@@ -137,53 +179,65 @@ const hide = (refName) => {
                         <th class="p-3 font-semibold pr-0"></th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr
-                        v-for="entry in folder.entries"
-                        :key="entry.id"
-                        class="hover:bg-gray-800 group"
-                    >
-                        <td class="p-3 pl-0 text-white font-medium">
-                            {{ entry.title }}
-                        </td>
-                        <td class="p-3">{{ entry.username }}</td>
-                        <td class="p-3">{{ entry.url }}</td>
-                        <td class="p-3">{{ entry.notes }}</td>
-                        <td class="p-3">
-                            {{ entry.formatted_modified_at }}
-                        </td>
-                        <td class="p-3 pr-0">
-                            <div
-                                class="flex items-center justify-end space-x-1"
-                            >
-                                <SecondaryButton
-                                    size="xs"
-                                    @click="
-                                        show(
-                                            'showPasswordEntryDetailsModal',
-                                            entry
-                                        )
-                                    "
-                                    >Details</SecondaryButton
+                <draggable
+                    v-model="refs.entries.value"
+                    item-key="id"
+                    tag="tbody"
+                    @end="checkMove"
+                >
+                    <template #item="{ element: entry }">
+                        <tr
+                            class="hover:bg-gray-800 group"
+                            :data-entry-id="entry.id"
+                        >
+                            <td class="p-3 pl-0 text-white font-medium">
+                                {{ entry.title }}
+                            </td>
+                            <td class="p-3">{{ entry.username }}</td>
+                            <td class="p-3">{{ entry.url }}</td>
+                            <td class="p-3">{{ entry.notes }}</td>
+                            <td class="p-3">
+                                {{ entry.formatted_modified_at }}
+                            </td>
+                            <td class="p-3 pr-0">
+                                <div
+                                    class="flex items-center justify-end space-x-1"
                                 >
-                                <DotDropdown class="pr-2">
-                                    <DropdownLink
+                                    <SecondaryButton
+                                        size="xs"
                                         @click="
-                                            show('showEditEntryModal', entry)
+                                            show(
+                                                'showPasswordEntryDetailsModal',
+                                                entry
+                                            )
                                         "
-                                        >Edit</DropdownLink
+                                        >Details</SecondaryButton
                                     >
-                                    <DropdownLink
-                                        @click="
-                                            show('showDeleteEntryModal', entry)
-                                        "
-                                        >Delete</DropdownLink
-                                    >
-                                </DotDropdown>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
+                                    <DotDropdown class="pr-2">
+                                        <DropdownLink
+                                            @click="
+                                                show(
+                                                    'showEditEntryModal',
+                                                    entry
+                                                )
+                                            "
+                                            >Edit</DropdownLink
+                                        >
+                                        <DropdownLink
+                                            @click="
+                                                show(
+                                                    'showDeleteEntryModal',
+                                                    entry
+                                                )
+                                            "
+                                            >Delete</DropdownLink
+                                        >
+                                    </DotDropdown>
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                </draggable>
             </table>
         </div>
 
@@ -232,5 +286,18 @@ const hide = (refName) => {
             :entry="refs.selectedEntry.value"
             @close="hide('showPasswordEntryDetailsModal')"
         />
+
+        <ConfirmModal
+            :show="refs.showMoveEntryModal.value"
+            :callback="handleMoveEntry"
+            @close="hide('showMoveEntryModal')"
+        >
+            <template #title>Move entry</template>
+            <template #body
+                >Are you sure you want to move this entry?<br />It will be moved
+                to the following folder:
+                <b>{{ refs.newFolder.value.name ?? "" }}</b></template
+            >
+        </ConfirmModal>
     </SidebarLayout>
 </template>

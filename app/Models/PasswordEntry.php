@@ -38,4 +38,15 @@ class PasswordEntry extends Model
             get: fn () => $this->password != null
         );
     }
+
+    public function folder()
+    {
+        return $this->belongsTo(Folder::class);
+    }
+
+    public function moveToFolder($folderId)
+    {
+        $this->folder_id = $folderId;
+        $this->save();
+    }
 }

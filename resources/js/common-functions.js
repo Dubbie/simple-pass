@@ -23,4 +23,14 @@ const getPasswordForEntry = async (entry) => {
     }
 };
 
-export {getSizeClasses, copyToClipboard, getPasswordForEntry};
+const getEntryById = async (entryId) => {
+    try {
+        return await axios.post(
+            route("password-entries.get-entry", entryId)
+        );
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export {getSizeClasses, copyToClipboard, getPasswordForEntry, getEntryById};
