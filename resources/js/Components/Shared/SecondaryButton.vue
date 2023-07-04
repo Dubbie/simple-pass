@@ -15,9 +15,7 @@ const props = defineProps({
     },
 });
 
-const sizeClasses = computed(() => {
-    return getSizeClasses(props.size);
-});
+const sizeClasses = `${getSizeClasses(props.size)}`;
 
 const baseClasses =
     "inline-flex justify-center rounded-md bg-gray-800 font-semibold text-white shadow-sm hover:bg-gray-700 group-hover:bg-gray-700";

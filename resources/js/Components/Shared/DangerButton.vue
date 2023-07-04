@@ -9,9 +9,7 @@ const props = defineProps({
     },
 });
 
-const sizeClasses = computed(() => {
-    return getSizeClasses(props.size);
-});
+const sizeClasses = `${getSizeClasses(props.size)}`;
 </script>
 
 <template>
