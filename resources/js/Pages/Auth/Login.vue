@@ -1,11 +1,11 @@
 <script setup>
-import Checkbox from '@/Components/Checkbox.vue';
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import Checkbox from "@/Components/Checkbox.vue";
+import AuthLayout from "@/Layouts/AuthLayout.vue";
+import InputError from "@/Components/InputError.vue";
+import InputLabel from "@/Components/Shared/InputLabel.vue";
+import PrimaryButton from "@/Components/Shared/PrimaryButton.vue";
+import TextInput from "@/Components/Shared/TextInput.vue";
+import { Head, Link, useForm } from "@inertiajs/vue3";
 
 defineProps({
     canResetPassword: {
@@ -17,20 +17,20 @@ defineProps({
 });
 
 const form = useForm({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
     remember: false,
 });
 
 const submit = () => {
-    form.post(route('login'), {
-        onFinish: () => form.reset('password'),
+    form.post(route("login"), {
+        onFinish: () => form.reset("password"),
     });
 };
 </script>
 
 <template>
-    <GuestLayout>
+    <AuthLayout heading="Sign in to your account">
         <Head title="Log in" />
 
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
@@ -69,26 +69,37 @@ const submit = () => {
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
 
-            <div class="block mt-4">
+            <div class="flex justify-between mt-4">
                 <label class="flex items-center">
                     <Checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="ml-2 text-sm text-gray-600">Remember me</span>
+                    <span class="ml-2 text-sm text-white">Remember me</span>
                 </label>
-            </div>
 
-            <div class="flex items-center justify-end mt-4">
                 <Link
                     v-if="canResetPassword"
                     :href="route('password.request')"
-                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    class="text-sm font-semibold text-indigo-400 hover:text-indigo-300 focus:text-indigo-300"
                 >
-                    Forgot your password?
+                    Forgot password?
                 </Link>
+            </div>
 
-                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+            <div class="text-center mt-6">
+                <PrimaryButton
+                    class="w-full"
+                    :class="{ 'opacity-25': form.processing }"
+                    :disabled="form.processing"
+                >
                     Log in
                 </PrimaryButton>
+
+                <Link
+                    :href="route('register')"
+                    class="block mt-3 text-sm font-semibold text-indigo-400 hover:text-indigo-300 focus:text-indigo-300"
+                >
+                    Don't have an account?
+                </Link>
             </div>
         </form>
-    </GuestLayout>
+    </AuthLayout>
 </template>
