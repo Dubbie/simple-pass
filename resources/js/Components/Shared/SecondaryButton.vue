@@ -1,5 +1,5 @@
 <script setup>
-import getSizeClasses from "@/common-functions";
+import { getSizeClasses } from "@/common-functions";
 import { Link } from "@inertiajs/vue3";
 import { computed } from "vue";
 
@@ -20,7 +20,7 @@ const sizeClasses = computed(() => {
 });
 
 const baseClasses =
-    "inline-flex justify-center rounded-md bg-white text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50";
+    "inline-flex justify-center rounded-md bg-gray-800 font-semibold text-white shadow-sm hover:bg-gray-700 group-hover:bg-gray-700";
 </script>
 
 <template>

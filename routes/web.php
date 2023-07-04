@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/password-entries/{passwordEntry}/destroy', [PasswordEntryController::class, 'destroy'])->name('password-entries.destroy');
     Route::post('/password-entries/{passwordEntry}/get-password', [PasswordEntryController::class, 'getPassword'])->name('password-entries.get-password');
+    Route::put('/password-entries/{passwordEntry}/update', [PasswordEntryController::class, 'update'])->name('password-entries.update');
     Route::get('/password-entries/{passwordEntry}', [PasswordEntryController::class, 'show'])->name('password-entries.show');
     Route::post('/password-entries/store', [PasswordEntryController::class, 'store'])->name('password-entries.store');
 });

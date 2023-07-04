@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdatePasswordEntryRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class UpdatePasswordEntryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Auth::check();
     }
 
     /**
@@ -22,7 +23,12 @@ class UpdatePasswordEntryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => 'nullable',
+            'username' => 'nullable',
+            'password' => 'nullable',
+            'url' => 'nullable',
+            'notes' => 'nullable',
+            'folder_id' => 'required|exists:folders,id',
         ];
     }
 }

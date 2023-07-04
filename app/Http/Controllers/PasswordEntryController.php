@@ -56,7 +56,27 @@ class PasswordEntryController extends Controller
      */
     public function update(UpdatePasswordEntryRequest $request, PasswordEntry $passwordEntry)
     {
-        //
+        // Validate the request data
+        $validatedData = $request->validated();
+
+        // Encrypt the password
+        $encryptedPassword = $this->encryptionService->encryptString($validatedData['password'], config('app.encription_key'));
+
+        // Create a DTO for the password entry
+        $peDTO = new PasswordEntryDTO();
+        $peDTO->setTitle($validatedData['title']);
+        $peDTO->setUsername($validatedData['username']);
+        $peDTO->setPassword($encryptedPassword);
+        $peDTO->setUrl($validatedData['url']);
+        $peDTO->setNotes($validatedData['notes']);
+        $peDTO->setFolderId($validatedData['folder_id']);
+        $peDTO->setUserId($passwordEntry->user_id);
+
+        // Create the entry using the DTO
+        $this->entryService->updateEntry($peDTO, $passwordEntry);
+
+        // Redirect back with a success message
+        return back()->with('banner', 'Entry created successfully');
     }
 
     /**

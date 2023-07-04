@@ -10,8 +10,12 @@ import Modal from "@/Components/Shared/Modal.vue";
 import { Head, router } from "@inertiajs/vue3";
 import { ref, watch } from "vue";
 import NewPasswordEntryModal from "@/Components/NewPasswordEntryModal.vue";
+import EditPasswordEntryModal from "@/Components/EditPasswordEntryModal.vue";
 import EmptyState from "@/Components/Shared/EmptyState.vue";
 import PasswordEntryDetailsModal from "@/Components/PasswordEntryDetailsModal.vue";
+import DotDropdown from "@/Components/Shared/DotDropdown.vue";
+import SecondaryButton from "@/Components/Shared/SecondaryButton.vue";
+import DropdownLink from "@/Components/DropdownLink.vue";
 
 const props = defineProps({
     folder: {
@@ -24,6 +28,7 @@ const refs = {
     showDeleteModal: ref(false),
     showNewFolderModal: ref(false),
     showNewEntryModal: ref(false),
+    showEditEntryModal: ref(false),
     showPasswordEntryDetailsModal: ref(false),
     selectedEntry: ref(null),
 };
@@ -36,13 +41,16 @@ const handleDelete = () => {
     });
 };
 
-const showDetails = (entry) => {
-    refs.showPasswordEntryDetailsModal.value = true;
-    refs.selectedEntry.value = entry;
+const show = (refName, entry = null) => {
+    if (entry) {
+        refs.selectedEntry.value = entry;
+    }
+
+    refs[refName].value = true;
 };
 
-const hideDetails = () => {
-    refs.showPasswordEntryDetailsModal.value = false;
+const hide = (refName) => {
+    refs[refName].value = false;
     refs.selectedEntry.value = null;
 };
 
@@ -119,15 +127,15 @@ watch(props, (newData) => {
                         <th class="p-3 font-semibold">Username</th>
                         <th class="p-3 font-semibold">URL</th>
                         <th class="p-3 font-semibold">Notes</th>
-                        <th class="p-3 font-semibold pr-0">Modified</th>
+                        <th class="p-3 font-semibold">Modified</th>
+                        <th class="p-3 font-semibold pr-0"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr
                         v-for="entry in folder.entries"
                         :key="entry.id"
-                        @click="showDetails(entry)"
-                        class="cursor-pointer hover:bg-gray-800"
+                        class="hover:bg-gray-800 group"
                     >
                         <td class="p-3 pl-0 text-white font-medium">
                             {{ entry.title }}
@@ -135,8 +143,33 @@ watch(props, (newData) => {
                         <td class="p-3">{{ entry.username }}</td>
                         <td class="p-3">{{ entry.url }}</td>
                         <td class="p-3">{{ entry.notes }}</td>
-                        <td class="p-3 pr-0">
+                        <td class="p-3">
                             {{ entry.formatted_modified_at }}
+                        </td>
+                        <td class="p-3 pr-0">
+                            <div
+                                class="flex items-center justify-end space-x-1"
+                            >
+                                <SecondaryButton
+                                    size="xs"
+                                    @click="
+                                        show(
+                                            'showPasswordEntryDetailsModal',
+                                            entry
+                                        )
+                                    "
+                                    >Details</SecondaryButton
+                                >
+                                <DotDropdown class="pr-2">
+                                    <DropdownLink
+                                        @click="
+                                            show('showEditEntryModal', entry)
+                                        "
+                                        >Edit</DropdownLink
+                                    >
+                                    <DropdownLink>Delete</DropdownLink>
+                                </DotDropdown>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
@@ -178,10 +211,16 @@ watch(props, (newData) => {
             @close="refs.showNewEntryModal.value = false"
         />
 
+        <EditPasswordEntryModal
+            :show="refs.showEditEntryModal.value"
+            :entry="refs.selectedEntry.value"
+            @close="hide('showEditEntryModal')"
+        />
+
         <PasswordEntryDetailsModal
             :show="refs.showPasswordEntryDetailsModal.value"
             :entry="refs.selectedEntry.value"
-            @close="hideDetails"
+            @close="hide('showPasswordEntryDetailsModal')"
         />
     </SidebarLayout>
 </template>

@@ -1,10 +1,11 @@
 const getSizeClasses = (size) => {
     return {
-        sm: "px-2 py-1",
-        md: "px-3 py-2",
-        lg: "px-6 py-3",
-        xl: "px-6 py-3",
-        "2xl": "px-6 py-3",
+        xs: "px-2 py-1 text-xs",
+        sm: "px-2 py-1 text-sm",
+        md: "px-3 py-2 text-sm",
+        lg: "px-6 py-3 text-sm",
+        xl: "px-6 py-3 text-base",
+        "2xl": "px-6 py-3 text-base",
     }[size];
 }
 
@@ -12,4 +13,14 @@ const copyToClipboard = (text) => {
   navigator.clipboard.writeText(text);
 };
 
-export {getSizeClasses, copyToClipboard};
+const getPasswordForEntry = async (entry) => {
+    try {
+        return await axios.post(
+            route("password-entries.get-password", entry)
+        );
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export {getSizeClasses, copyToClipboard, getPasswordForEntry};

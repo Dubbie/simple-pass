@@ -29,4 +29,21 @@ class EntryService
         // Return the created password entry.
         return $passwordEntry;
     }
+
+    public function updateEntry(PasswordEntryDTO $passwordEntryDTO, PasswordEntry $passwordEntry)
+    {
+        // Create a new password entry using the data from the DTO.
+        $passwordEntry = $passwordEntry->update([
+            'title' => $passwordEntryDTO->getTitle(),
+            'username' => $passwordEntryDTO->getUsername(),
+            'password' => $passwordEntryDTO->getPassword(),
+            'url' => $passwordEntryDTO->getUrl(),
+            'notes' => $passwordEntryDTO->getNotes(),
+            'folder_id' => $passwordEntryDTO->getFolderId(),
+            'user_id' => $passwordEntryDTO->getUserId(),
+        ]);
+
+        // Return the created password entry.
+        return $passwordEntry;
+    }
 }
