@@ -12,6 +12,7 @@ import { ref, watch } from "vue";
 import NewPasswordEntryModal from "@/Components/NewPasswordEntryModal.vue";
 import EditPasswordEntryModal from "@/Components/EditPasswordEntryModal.vue";
 import EmptyState from "@/Components/Shared/EmptyState.vue";
+import DeleteModal from "@/Components/Shared/DeleteModal.vue";
 import PasswordEntryDetailsModal from "@/Components/PasswordEntryDetailsModal.vue";
 import DotDropdown from "@/Components/Shared/DotDropdown.vue";
 import SecondaryButton from "@/Components/Shared/SecondaryButton.vue";
@@ -25,18 +26,27 @@ const props = defineProps({
 });
 
 const refs = {
-    showDeleteModal: ref(false),
+    showDeleteFolderModal: ref(false),
     showNewFolderModal: ref(false),
     showNewEntryModal: ref(false),
     showEditEntryModal: ref(false),
+    showDeleteEntryModal: ref(false),
     showPasswordEntryDetailsModal: ref(false),
     selectedEntry: ref(null),
 };
 
-const handleDelete = () => {
+const handleDeleteFolder = () => {
     router.delete(route("folders.destroy", props.folder), {
         onSuccess: () => {
-            refs.showDeleteModal.value = false;
+            hide("showDeleteFolderModal");
+        },
+    });
+};
+
+const handleDeleteEntry = () => {
+    router.delete(route("password-entries.destroy", refs.selectedEntry.value), {
+        onSuccess: () => {
+            hide("showDeleteEntryModal");
         },
     });
 };
@@ -53,10 +63,6 @@ const hide = (refName) => {
     refs[refName].value = false;
     refs.selectedEntry.value = null;
 };
-
-watch(props, (newData) => {
-    console.log(newData.folder);
-});
 </script>
 
 <template>
@@ -75,7 +81,7 @@ watch(props, (newData) => {
                     >
                     <LinkButton
                         color="secondary"
-                        @click="refs.showDeleteModal.value = true"
+                        @click="show('showDeleteFolderModal')"
                         >Delete</LinkButton
                     >
                 </div>
@@ -167,7 +173,12 @@ watch(props, (newData) => {
                                         "
                                         >Edit</DropdownLink
                                     >
-                                    <DropdownLink>Delete</DropdownLink>
+                                    <DropdownLink
+                                        @click="
+                                            show('showDeleteEntryModal', entry)
+                                        "
+                                        >Delete</DropdownLink
+                                    >
                                 </DotDropdown>
                             </div>
                         </td>
@@ -176,28 +187,27 @@ watch(props, (newData) => {
             </table>
         </div>
 
-        <Modal
-            :show="refs.showDeleteModal.value"
-            @close="refs.showDeleteModal.value = false"
+        <DeleteModal
+            :show="refs.showDeleteFolderModal.value"
+            :callback="handleDeleteFolder"
+            @close="hide('showDeleteFolderModal')"
         >
-            <div class="p-4">
-                <ModalTitle>Delete Folder</ModalTitle>
-                <p class="text-sm text-gray-400">
-                    Are you sure you want to delete the folder? This cannot be
-                    undone.
-                </p>
-                <div class="mt-4 flex items-center space-x-4">
-                    <DangerButton @click="handleDelete"
-                        >Yes, delete</DangerButton
-                    >
-                    <LinkButton
-                        color="secondary"
-                        @click="refs.showDeleteModal.value = false"
-                        >Cancel</LinkButton
-                    >
-                </div>
-            </div>
-        </Modal>
+            <template #title>Delete Folder</template>
+            <template #body
+                >Are you sure you want to delete this folder?</template
+            >
+        </DeleteModal>
+
+        <DeleteModal
+            :show="refs.showDeleteEntryModal.value"
+            :callback="handleDeleteEntry"
+            @close="hide('showDeleteEntryModal')"
+        >
+            <template #title>Delete Entry</template>
+            <template #body
+                >Are you sure you want to delete this entry?</template
+            >
+        </DeleteModal>
 
         <NewFolderModal
             :show="refs.showNewFolderModal.value"

@@ -1,7 +1,7 @@
 <script setup>
 import Modal from "@/Components/Shared/Modal.vue";
 import ModalTitle from "@/Components/Shared/ModalTitle.vue";
-import { copyToClipboard } from "@/common-functions";
+import { copyToClipboard, getPasswordForEntry } from "@/common-functions";
 import axios from "axios";
 import { ref } from "vue";
 
@@ -20,7 +20,7 @@ const showPassword = ref(false);
 const actualPassword = ref(null);
 
 const copyPassword = async () => {
-    const response = await getPassword();
+    const response = await getPasswordForEntry(props.entry);
     copyToClipboard(response.data);
     copyPasswordLabel.value = "Copied!";
     setTimeout(() => {
@@ -28,19 +28,9 @@ const copyPassword = async () => {
     }, 2000);
 };
 
-const getPassword = async () => {
-    try {
-        return await axios.post(
-            route("password-entries.get-password", props.entry)
-        );
-    } catch (error) {
-        console.log(error);
-    }
-};
-
 const handleShowPassword = async () => {
     if (!showPassword.value) {
-        const response = await getPassword();
+        const response = await getPasswordForEntry(props.entry);
         actualPassword.value = response.data;
     } else {
         actualPassword.value = null;

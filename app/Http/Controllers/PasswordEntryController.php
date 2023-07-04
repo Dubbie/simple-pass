@@ -84,7 +84,10 @@ class PasswordEntryController extends Controller
      */
     public function destroy(PasswordEntry $passwordEntry)
     {
-        //
+        $passwordEntry->delete();
+
+        // Redirect back with a success message
+        return back()->with('banner', 'Entry deleted successfully');
     }
 
     public function getPassword(PasswordEntry $passwordEntry)
