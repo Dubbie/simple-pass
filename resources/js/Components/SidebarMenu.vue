@@ -8,6 +8,8 @@ import LinkButton from "./Shared/LinkButton.vue";
 import NewFolderModal from "./NewFolderModal.vue";
 import { ref } from "vue";
 import SidebarFolderLink from "./SidebarFolderLink.vue";
+import { computed } from "vue";
+import { usePage } from "@inertiajs/vue3";
 
 const refs = {
     showNewFolderModal: ref(false),
@@ -16,6 +18,10 @@ const refs = {
 const handleNewFolder = () => {
     refs.showNewFolderModal.value = true;
 };
+
+const page = usePage();
+
+const folders = computed(() => page.props.folders.roots);
 </script>
 
 <template>
@@ -64,12 +70,10 @@ const handleNewFolder = () => {
                         <li>
                             <SidebarHeader>Your folders</SidebarHeader>
                         </li>
-                        <p v-if="$page.props.folders.roots.length == 0">
-                            No Folders
-                        </p>
+                        <p v-if="folders.length == 0">No Folders</p>
                         <template v-else>
                             <template
-                                v-for="folder in $page.props.folders.roots"
+                                v-for="folder in folders"
                                 :key="folder.id"
                             >
                                 <li>

@@ -6,6 +6,7 @@ import InputLabel from "@/Components/Shared/InputLabel.vue";
 import TextInput from "@/Components/Shared/TextInput.vue";
 import TextareaInput from "@/Components/Shared/TextareaInput.vue";
 import PrimaryButton from "@/Components/Shared/PrimaryButton.vue";
+import { watch } from "vue";
 
 const props = defineProps({
     show: {
@@ -37,6 +38,10 @@ const handleSubmission = () => {
         },
     });
 };
+
+watch(props, (newData) => {
+    form.folder_id = newData.folderId;
+});
 </script>
 
 <template>

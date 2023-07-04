@@ -8,7 +8,7 @@ import NewFolderModal from "@/Components/NewFolderModal.vue";
 import LinkButton from "@/Components/Shared/LinkButton.vue";
 import Modal from "@/Components/Shared/Modal.vue";
 import { Head, router } from "@inertiajs/vue3";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import NewPasswordEntryModal from "@/Components/NewPasswordEntryModal.vue";
 import EmptyState from "@/Components/Shared/EmptyState.vue";
 import PasswordEntryDetailsModal from "@/Components/PasswordEntryDetailsModal.vue";
@@ -45,6 +45,10 @@ const hideDetails = () => {
     refs.showPasswordEntryDetailsModal.value = false;
     refs.selectedEntry.value = null;
 };
+
+watch(props, (newData) => {
+    console.log(newData.folder);
+});
 </script>
 
 <template>

@@ -1,6 +1,6 @@
 <script setup>
-import { ref } from "vue";
 import SidebarLink from "@/Components/SidebarLink.vue";
+import { computed } from "vue";
 
 const props = defineProps({
     folder: {
@@ -8,12 +8,17 @@ const props = defineProps({
         required: true,
     },
 });
+
+const active = computed(() => {
+    return route().current("folders.show", props.folder);
+});
 </script>
 
 <template>
     <SidebarLink
         :href="route('folders.show', folder)"
-        :active="route().current('folders.show', folder)"
+        :active="active"
+        :key="active"
     >
         <template #icon>
             <span

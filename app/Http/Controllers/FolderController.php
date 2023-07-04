@@ -49,7 +49,8 @@ class FolderController extends Controller
 
     public function destroy(Folder $folder)
     {
+        $parentFolder = $folder->parentFolder;
         $folder->delete();
-        return redirect(route('dashboard'))->with('banner', 'Folder deleted successfully');
+        return redirect(route('folders.show', $parentFolder))->with('banner', 'Folder deleted successfully');
     }
 }

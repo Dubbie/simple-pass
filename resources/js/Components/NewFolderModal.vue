@@ -6,6 +6,7 @@ import InputLabel from "@/Components/Shared/InputLabel.vue";
 import TextInput from "@/Components/Shared/TextInput.vue";
 import PrimaryButton from "@/Components/Shared/PrimaryButton.vue";
 import SelectInput from "./Shared/SelectInput.vue";
+import { watch } from "vue";
 
 const props = defineProps({
     show: {
@@ -32,6 +33,10 @@ const handleSubmission = () => {
         },
     });
 };
+
+watch(props, (newData) => {
+    form.parent_id = newData.parentId.toString();
+});
 </script>
 
 <template>
