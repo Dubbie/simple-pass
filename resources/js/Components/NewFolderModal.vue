@@ -35,7 +35,9 @@ const handleSubmission = () => {
 };
 
 watch(props, (newData) => {
-    form.parent_id = newData.parentId.toString();
+    if (newData.parentId) {
+        form.parent_id = newData.parentId.toString();
+    }
 });
 </script>
 
