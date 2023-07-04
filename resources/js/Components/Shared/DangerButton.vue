@@ -16,7 +16,7 @@ const sizeClasses = computed(() => {
 
 <template>
     <button
-        class="rounded-md bg-red-600 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        class="rounded-md bg-red-600 font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         :class="sizeClasses"
     >
         <slot />

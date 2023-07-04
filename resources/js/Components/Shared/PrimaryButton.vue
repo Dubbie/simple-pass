@@ -18,7 +18,7 @@ const props = defineProps({
 });
 
 const baseClasses =
-    "rounded-md whitespace-nowrap bg-indigo-600 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600";
+    "rounded-md whitespace-nowrap bg-indigo-600 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600";
 
 const sizeClasses = computed(() => {
     return getSizeClasses(props.size);

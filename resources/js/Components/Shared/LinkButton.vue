@@ -1,4 +1,5 @@
 <script setup>
+import { getSizeClasses } from "@/common-functions";
 import { Link } from "@inertiajs/vue3";
 import { computed } from "vue";
 
@@ -18,13 +19,7 @@ const props = defineProps({
 });
 
 const sizeClasses = computed(() => {
-    return {
-        sm: "py-1",
-        md: "py-2",
-        lg: "py-3",
-        xl: "py-3",
-        "2xl": "py-3",
-    }[props.size];
+    return getSizeClasses(props.size);
 });
 
 const colorClasses = computed(() => {
@@ -36,7 +31,7 @@ const colorClasses = computed(() => {
 });
 
 const baseClasses =
-    "inline-flex text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600";
+    "inline-flex font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600";
 </script>
 
 <template>
