@@ -26,14 +26,14 @@ const handleMobileMenu = () => {
     <div class="overflow-y-auto h-screen bg-gray-900">
         <Head :title="title" />
 
+        <AppBanner />
+
         <div>
             <!-- Sidebar -->
             <AppSidebar @close="handleMobileMenu"></AppSidebar>
 
             <!-- Page Content -->
             <div class="xl:pl-72">
-                <AppBanner></AppBanner>
-
                 <AppSearchbar @toggle-menu="handleMobileMenu"></AppSearchbar>
 
                 <main class="text-white">
