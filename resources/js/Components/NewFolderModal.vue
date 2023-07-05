@@ -1,12 +1,14 @@
 <script setup>
 import Modal from "@/Components/Shared/Modal.vue";
 import ModalTitle from "@/Components/Shared/ModalTitle.vue";
-import { useForm } from "@inertiajs/vue3";
+import { useForm, usePage } from "@inertiajs/vue3";
 import InputLabel from "@/Components/Shared/InputLabel.vue";
 import TextInput from "@/Components/Shared/TextInput.vue";
 import PrimaryButton from "@/Components/Shared/PrimaryButton.vue";
 import SelectInput from "./Shared/SelectInput.vue";
 import { watch } from "vue";
+import { ref } from "vue";
+import { onMounted } from "vue";
 
 const props = defineProps({
     show: {
@@ -34,10 +36,38 @@ const handleSubmission = () => {
     });
 };
 
+const options = ref([]);
+
+const getFolderOptions = (folder, depth) => {
+    let options = [];
+    const prefix = "-".repeat(depth) + (depth > 0 ? " " : "");
+
+    options.push({
+        name: `${prefix}${folder.name}`,
+        id: folder.id,
+    });
+
+    folder.sub_folders.forEach((subFolder) => {
+        options = [...options, ...getFolderOptions(subFolder, depth + 1)];
+    });
+
+    return options;
+};
+
 watch(props, (newData) => {
     if (newData.parentId) {
         form.parent_id = newData.parentId.toString();
     }
+});
+
+onMounted(() => {
+    let totalOptions = [];
+    let depth = 0;
+    usePage().props.folders.roots.forEach((element) => {
+        totalOptions = [...totalOptions, ...getFolderOptions(element, depth)];
+    });
+
+    options.value = totalOptions;
 });
 </script>
 
@@ -67,7 +97,7 @@ watch(props, (newData) => {
                 >
                     <option value="">None</option>
                     <option
-                        v-for="folder in $page.props.folders.all"
+                        v-for="folder in options"
                         :key="folder.id"
                         :value="folder.id"
                     >
