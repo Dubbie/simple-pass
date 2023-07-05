@@ -70,7 +70,12 @@ const folders = computed(() => page.props.folders.roots);
                         <li>
                             <SidebarHeader>Your folders</SidebarHeader>
                         </li>
-                        <p v-if="folders.length == 0">No Folders</p>
+                        <p
+                            v-if="folders.length == 0"
+                            class="text-gray-600 font-semibold text-sm"
+                        >
+                            No Folders
+                        </p>
                         <template v-else>
                             <template
                                 v-for="folder in folders"
