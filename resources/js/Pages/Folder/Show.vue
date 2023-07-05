@@ -112,9 +112,11 @@ watch(props, (newProps) => {
 
     <SidebarLayout>
         <template #header>
-            <div class="flex justify-between items-center">
+            <div
+                class="flex flex-col justify-between sm:items-center sm:flex-row"
+            >
                 <PageTitle>{{ folder.name }}</PageTitle>
-                <div class="flex space-x-3">
+                <div class="mt-3 sm:mt-0 flex space-x-3">
                     <PrimaryButton @click="refs.showNewEntryModal.value = true"
                         >New entry</PrimaryButton
                     >
@@ -168,77 +170,93 @@ watch(props, (newProps) => {
                 </EmptyState>
             </div>
 
-            <table v-else class="w-full text-sm">
-                <thead class="border-b border-gray-700 text-white">
-                    <tr class="text-left">
-                        <th class="p-3 font-semibold pl-0">Title</th>
-                        <th class="p-3 font-semibold">Username</th>
-                        <th class="p-3 font-semibold">URL</th>
-                        <th class="p-3 font-semibold">Notes</th>
-                        <th class="p-3 font-semibold">Modified</th>
-                        <th class="p-3 font-semibold pr-0"></th>
-                    </tr>
-                </thead>
-                <draggable
-                    v-model="refs.entries.value"
-                    item-key="id"
-                    tag="tbody"
-                    @end="checkMove"
-                >
-                    <template #item="{ element: entry }">
-                        <tr
-                            class="hover:bg-gray-800 group"
-                            :data-entry-id="entry.id"
-                        >
-                            <td class="p-3 pl-0 text-white font-medium">
-                                {{ entry.title }}
-                            </td>
-                            <td class="p-3">{{ entry.username }}</td>
-                            <td class="p-3">{{ entry.url }}</td>
-                            <td class="p-3">{{ entry.notes }}</td>
-                            <td class="p-3">
-                                {{ entry.formatted_modified_at }}
-                            </td>
-                            <td class="p-3 pr-0">
-                                <div
-                                    class="flex items-center justify-end space-x-1"
-                                >
-                                    <SecondaryButton
-                                        size="xs"
-                                        @click="
-                                            show(
-                                                'showPasswordEntryDetailsModal',
-                                                entry
-                                            )
-                                        "
-                                        >Details</SecondaryButton
-                                    >
-                                    <DotDropdown class="pr-2">
-                                        <DropdownLink
-                                            @click="
-                                                show(
-                                                    'showEditEntryModal',
-                                                    entry
-                                                )
-                                            "
-                                            >Edit</DropdownLink
-                                        >
-                                        <DropdownLink
-                                            @click="
-                                                show(
-                                                    'showDeleteEntryModal',
-                                                    entry
-                                                )
-                                            "
-                                            >Delete</DropdownLink
-                                        >
-                                    </DotDropdown>
-                                </div>
-                            </td>
+            <div v-else>
+                <table class="w-full text-sm">
+                    <thead class="border-b border-gray-700 text-white">
+                        <tr class="text-left">
+                            <th class="p-3 font-semibold sm:pl-0">Title</th>
+                            <th class="p-3 font-semibold hidden md:table-cell">
+                                Username
+                            </th>
+                            <th class="p-3 font-semibold hidden md:table-cell">
+                                URL
+                            </th>
+                            <th class="p-3 font-semibold hidden md:table-cell">
+                                Notes
+                            </th>
+                            <th class="p-3 font-semibold hidden md:table-cell">
+                                Modified
+                            </th>
+                            <th class="p-3 font-semibold sm:pr-0"></th>
                         </tr>
-                    </template>
-                </draggable>
-            </table>
+                    </thead>
+                    <draggable
+                        v-model="refs.entries.value"
+                        item-key="id"
+                        tag="tbody"
+                        @end="checkMove"
+                    >
+                        <template #item="{ element: entry }">
+                            <tr
+                                class="hover:bg-gray-800 group"
+                                :data-entry-id="entry.id"
+                            >
+                                <td class="p-3 text-white font-medium sm:pl-0">
+                                    {{ entry.title }}
+                                </td>
+                                <td class="p-3 hidden md:table-cell">
+                                    {{ entry.username }}
+                                </td>
+                                <td class="p-3 hidden md:table-cell">
+                                    {{ entry.url }}
+                                </td>
+                                <td class="p-3 hidden md:table-cell">
+                                    {{ entry.notes }}
+                                </td>
+                                <td class="p-3 hidden md:table-cell">
+                                    {{ entry.formatted_modified_at }}
+                                </td>
+                                <td class="p-3 sm:pr-0">
+                                    <div
+                                        class="flex items-center justify-end space-x-1"
+                                    >
+                                        <SecondaryButton
+                                            size="xs"
+                                            @click="
+                                                show(
+                                                    'showPasswordEntryDetailsModal',
+                                                    entry
+                                                )
+                                            "
+                                            >Details</SecondaryButton
+                                        >
+                                        <DotDropdown class="pr-2">
+                                            <DropdownLink
+                                                @click="
+                                                    show(
+                                                        'showEditEntryModal',
+                                                        entry
+                                                    )
+                                                "
+                                                >Edit</DropdownLink
+                                            >
+                                            <DropdownLink
+                                                @click="
+                                                    show(
+                                                        'showDeleteEntryModal',
+                                                        entry
+                                                    )
+                                                "
+                                                >Delete</DropdownLink
+                                            >
+                                        </DotDropdown>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+                    </draggable>
+                </table>
+            </div>
         </div>
 
         <DeleteModal

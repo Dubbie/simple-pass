@@ -32,7 +32,7 @@ defineEmits(["close"]);
                         class="fixed inset-0 transform transition-all"
                         @click="$emit('close')"
                     >
-                        <div class="absolute inset-0 bg-gray-500 opacity-75" />
+                        <div class="absolute inset-0 bg-gray-900 opacity-75" />
                     </div>
                 </transition>
 
@@ -46,7 +46,7 @@ defineEmits(["close"]);
                 >
                     <div
                         v-show="showMobileMenu"
-                        class="relative mr-16 flex flex-1 flex-col w-full max-w-xs transform transition-all"
+                        class="relative mr-16 flex flex-1 flex-col w-full max-w-xs transform transition-all bg-gray-900"
                     >
                         <div
                             class="pt-5 w-16 flex justify-center absolute top-0 left-full"
@@ -72,7 +72,7 @@ defineEmits(["close"]);
                             </button>
                         </div>
 
-                        <SidebarMenu></SidebarMenu>
+                        <SidebarMenu />
                     </div>
                 </transition>
             </div>
