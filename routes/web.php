@@ -4,6 +4,7 @@ use App\Http\Controllers\FolderController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PasswordEntryController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SearchController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -38,6 +39,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/password-entries/{passwordEntry}/update', [PasswordEntryController::class, 'update'])->name('password-entries.update');
     Route::get('/password-entries/{passwordEntry}', [PasswordEntryController::class, 'show'])->name('password-entries.show');
     Route::post('/password-entries/store', [PasswordEntryController::class, 'store'])->name('password-entries.store');
+
+    Route::get('/search', [SearchController::class, 'find'])->name('search');
 });
 
 require __DIR__ . '/auth.php';
