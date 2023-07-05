@@ -59,7 +59,7 @@ const fetchQuery = async () => {
 
 <template>
     <div
-        class="flex flex-shrink-0 h-16 items-center sticky border-b border-gray-700 gap-x-4 px-4 md:px-6 md:gap-x-6 lg:px-8"
+        class="flex flex-shrink-0 h-16 items-center border-b border-gray-700 gap-x-4 px-4 md:px-6 md:gap-x-6 lg:px-8"
     >
         <div class="flex flex-1 self-stretch gap-4 lg:gap-6">
             <button @click="$emit('toggle-menu')" class="xl:hidden">
@@ -83,11 +83,11 @@ const fetchQuery = async () => {
             <!-- Full Screen Dropdown Overlay -->
             <div
                 v-show="open"
-                class="fixed inset-0 z-2"
+                class="fixed inset-0 z-40"
                 @click="open = false"
             ></div>
 
-            <form @submit.prevent="submitSearch" class="flex relative flex-1">
+            <form @submit.prevent="submitSearch" class="relative z-50 flex-1">
                 <label for="search-field" class="sr-only">Search</label>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -115,7 +115,7 @@ const fetchQuery = async () => {
                 />
 
                 <div
-                    class="absolute top-full inset-x-0 -mx-8 bg-gray-800 border-y border-gray-700 shadow"
+                    class="z-50 absolute top-full inset-x-0 -mx-8 bg-gray-800 border-y border-gray-700 shadow"
                     v-show="open"
                 >
                     <div
@@ -155,14 +155,15 @@ const fetchQuery = async () => {
                             :key="entry.id"
                         >
                             <p
-                                class="flex space-x-3 text-gray-500 text-sm font-semibold py-2 px-4 rounded-md hover:bg-gray-700 cursor-pointer"
+                                class="grid grid-cols-4 text-gray-500 text-sm font-semibold py-2 px-4 rounded-md hover:bg-gray-700 cursor-pointer"
                             >
                                 <span class="text-white">{{
                                     entry.title
                                 }}</span>
                                 <span>{{ entry.username }}</span>
-                                <span>{{ entry.url }}</span>
-                                <span>{{ entry.notes }}</span>
+                                <span class="truncate whitespace-nowrap">{{
+                                    entry.url
+                                }}</span>
                             </p>
                         </Link>
                     </div>
