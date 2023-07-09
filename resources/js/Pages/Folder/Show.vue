@@ -194,6 +194,7 @@ watch(props, (newProps) => {
                         v-model="refs.entries.value"
                         item-key="id"
                         tag="tbody"
+                        :sort="false"
                         @end="checkMove"
                     >
                         <template #item="{ element: entry }">
