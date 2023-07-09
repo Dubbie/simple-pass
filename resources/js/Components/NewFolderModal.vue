@@ -9,6 +9,7 @@ import SelectInput from "./Shared/SelectInput.vue";
 import { watch } from "vue";
 import { ref } from "vue";
 import { onMounted } from "vue";
+import { getFolderOptions } from "@/common-functions";
 
 const props = defineProps({
     show: {
@@ -37,22 +38,6 @@ const handleSubmission = () => {
 };
 
 const options = ref([]);
-
-const getFolderOptions = (folder, depth) => {
-    let options = [];
-    const prefix = "-".repeat(depth) + (depth > 0 ? " " : "");
-
-    options.push({
-        name: `${prefix}${folder.name}`,
-        id: folder.id,
-    });
-
-    folder.sub_folders.forEach((subFolder) => {
-        options = [...options, ...getFolderOptions(subFolder, depth + 1)];
-    });
-
-    return options;
-};
 
 watch(props, (newData) => {
     if (newData.parentId) {

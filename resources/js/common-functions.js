@@ -1,3 +1,5 @@
+import { usePage } from "@inertiajs/vue3";
+
 const getSizeClasses = (size) => {
     return {
         xs: `px-2 py-1 text-xs`,
@@ -32,4 +34,30 @@ const getEntryById = async (entryId) => {
     }
 };
 
-export {getSizeClasses, copyToClipboard, getPasswordForEntry, getEntryById};
+const getFolderOptions = (folder, depth) => {
+    let options = [];
+    const prefix = "-".repeat(depth) + (depth > 0 ? " " : "");
+
+    options.push({
+        name: `${prefix}${folder.name}`,
+        id: folder.id,
+    });
+
+    folder.sub_folders.forEach((subFolder) => {
+        options = [...options, ...getFolderOptions(subFolder, depth + 1)];
+    });
+
+    return options;
+};
+
+const getAllFolderOptions = () => {
+    let totalOptions = [];
+    let depth = 0;
+    usePage().props.folders.roots.forEach((element) => {
+        totalOptions = [...totalOptions, ...getFolderOptions(element, depth)];
+    });
+
+    return totalOptions;
+}
+
+export {getSizeClasses, copyToClipboard, getPasswordForEntry, getEntryById, getFolderOptions, getAllFolderOptions};

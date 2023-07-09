@@ -17,6 +17,7 @@ import SecondaryButton from "@/Components/Shared/SecondaryButton.vue";
 import DropdownLink from "@/Components/DropdownLink.vue";
 import draggable from "vuedraggable";
 import { watch } from "vue";
+import MovePasswordEntryModal from "@/Components/MovePasswordEntryModal.vue";
 
 const props = defineProps({
     folder: {
@@ -33,6 +34,7 @@ const refs = {
     showEditEntryModal: ref(false),
     showDeleteEntryModal: ref(false),
     showPasswordEntryDetailsModal: ref(false),
+    showConfirmMoveEntryModal: ref(false),
     showMoveEntryModal: ref(false),
     selectedEntry: ref(null),
     selectedEntryId: ref(null),
@@ -83,12 +85,12 @@ const checkMove = async (evt) => {
             name: folderLink.dataset.folderName,
         };
         refs.selectedEntryId.value = evt.item.dataset.entryId;
-        show("showMoveEntryModal");
+        show("showConfirmMoveEntryModal");
     }
 };
 
 const handleMoveEntry = () => {
-    router.post(
+    router.put(
         route("password-entries.move"),
         {
             password_entry_id: refs.selectedEntryId.value,
@@ -96,7 +98,7 @@ const handleMoveEntry = () => {
         },
         {
             onSuccess: () => {
-                hide("showMoveEntryModal");
+                hide("showConfirmMoveEntryModal");
             },
         }
     );
@@ -245,6 +247,15 @@ watch(props, (newProps) => {
                                             <DropdownLink
                                                 @click="
                                                     show(
+                                                        'showMoveEntryModal',
+                                                        entry
+                                                    )
+                                                "
+                                                >Move</DropdownLink
+                                            >
+                                            <DropdownLink
+                                                @click="
+                                                    show(
                                                         'showDeleteEntryModal',
                                                         entry
                                                     )
@@ -301,6 +312,12 @@ watch(props, (newProps) => {
             @close="hide('showEditEntryModal')"
         />
 
+        <MovePasswordEntryModal
+            :show="refs.showMoveEntryModal.value"
+            :entry="refs.selectedEntry.value"
+            @close="hide('showMoveEntryModal')"
+        />
+
         <PasswordEntryDetailsModal
             :show="refs.showPasswordEntryDetailsModal.value"
             :entry="refs.selectedEntry.value"
@@ -308,9 +325,9 @@ watch(props, (newProps) => {
         />
 
         <ConfirmModal
-            :show="refs.showMoveEntryModal.value"
+            :show="refs.showConfirmMoveEntryModal.value"
             :callback="handleMoveEntry"
-            @close="hide('showMoveEntryModal')"
+            @close="hide('showConfirmMoveEntryModal')"
         >
             <template #title>Move entry</template>
             <template #body
