@@ -195,6 +195,7 @@ watch(props, (newProps) => {
                         item-key="id"
                         tag="tbody"
                         :sort="false"
+                        chosenClass="opacity-50"
                         @end="checkMove"
                     >
                         <template #item="{ element: entry }">
