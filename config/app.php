@@ -185,5 +185,5 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
-    'encription_key' => env('ENCRIPTION_KEY', 'enc-key-1234567890abcdef'),
+    'encription_key' => env('APP_KEY', 'enc-key-1234567890abcdef'),
 ];
