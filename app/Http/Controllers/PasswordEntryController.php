@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DTOs\PasswordEntryDTO;
 use App\Http\Requests\MovePasswordEntryRequest;
 use App\Http\Requests\StorePasswordEntryRequest;
+use App\Http\Requests\UpdateEntriesOrderRequest;
 use App\Http\Requests\UpdatePasswordEntryRequest;
 use App\Models\PasswordEntry;
 use App\Services\EncryptionService;
@@ -151,5 +152,13 @@ class PasswordEntryController extends Controller
 
         // return redirect(route('folders.show', ['folder' => $passwordEntry->folder]))->with('banner', 'Entry moved successfully');
         return back()->with('banner', 'Entry moved successfully');
+    }
+
+    public function updateOrder(UpdateEntriesOrderRequest $request)
+    {
+        $entries = $request->validated('entries');
+
+        // Update the order of the entries using the service
+        $this->entryService->updateOrder($entries);
     }
 }

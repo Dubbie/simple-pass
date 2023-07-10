@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\DTOs\PasswordEntryDTO;
 use App\Models\PasswordEntry;
+use Illuminate\Support\Facades\Log;
 
 class EntryService
 {
@@ -45,5 +46,13 @@ class EntryService
 
         // Return the created password entry.
         return $passwordEntry;
+    }
+
+    public function updateOrder(array $entries)
+    {
+        foreach ($entries as $i => $entry) {
+            $passwordEntry = PasswordEntry::find($entry['id']);
+            $passwordEntry->setOrderTo($i);
+        }
     }
 }

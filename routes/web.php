@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/folders/store', [FolderController::class, 'store'])->name('folders.store');
 
     Route::put('/password-entries/move', [PasswordEntryController::class, 'move'])->name('password-entries.move');
+    Route::put('/password-entries/update-order', [PasswordEntryController::class, 'updateOrder'])->name('password-entries.update-order');
     Route::post('/password-entries/{entryId}/get-entry', [PasswordEntryController::class, 'getEntry'])->name('password-entries.get-entry');
     Route::delete('/password-entries/{passwordEntry}/destroy', [PasswordEntryController::class, 'destroy'])->name('password-entries.destroy');
     Route::post('/password-entries/{passwordEntry}/get-password', [PasswordEntryController::class, 'getPassword'])->name('password-entries.get-password');

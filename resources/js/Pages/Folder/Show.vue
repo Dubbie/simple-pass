@@ -18,6 +18,7 @@ import DropdownLink from "@/Components/DropdownLink.vue";
 import draggable from "vuedraggable";
 import { watch } from "vue";
 import MovePasswordEntryModal from "@/Components/MovePasswordEntryModal.vue";
+import axios from "axios";
 
 const props = defineProps({
     folder: {
@@ -102,6 +103,22 @@ const handleMoveEntry = () => {
             },
         }
     );
+};
+
+const handleChange = async (event) => {
+    if ("moved" in event) {
+        try {
+            const response = await axios.request({
+                url: route("password-entries.update-order"),
+                data: {
+                    entries: refs.entries.value,
+                },
+                method: "PUT",
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    }
 };
 
 watch(props, (newProps) => {
@@ -196,8 +213,9 @@ watch(props, (newProps) => {
                         v-model="refs.entries.value"
                         item-key="id"
                         tag="tbody"
-                        :sort="false"
+                        placeholder="dashed"
                         chosenClass="opacity-50"
+                        @change="handleChange"
                         @end="checkMove"
                     >
                         <template #item="{ element: entry }">

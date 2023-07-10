@@ -6,13 +6,14 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class PasswordEntry extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'title', 'user_id', 'folder_id', 'username', 'password', 'url', 'notes'
+        'title', 'user_id', 'folder_id', 'username', 'password', 'url', 'notes', 'order'
     ];
 
     protected $hidden = [
@@ -48,5 +49,13 @@ class PasswordEntry extends Model
     {
         $this->folder_id = $folderId;
         $this->save();
+    }
+
+    public function setOrderTo($newOrder)
+    {
+        $this->order = $newOrder;
+        $this->save();
+
+        Log::info(sprintf("Updated order of entry %s, new order is: %d", $this->title, $this->order));
     }
 }

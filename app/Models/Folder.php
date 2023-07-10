@@ -32,7 +32,7 @@ class Folder extends Model
 
     public function entries()
     {
-        return $this->hasMany(PasswordEntry::class);
+        return $this->hasMany(PasswordEntry::class)->orderBy('order', 'ASC');
     }
 
     public function withEntries()
