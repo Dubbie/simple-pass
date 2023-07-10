@@ -10,7 +10,7 @@ const props = defineProps({
 });
 
 const activeClasses = props.active
-    ? "text-white bg-gray-800"
+    ? "text-white hover:bg-gray-800"
     : "text-gray-400 hover:text-white hover:bg-gray-800";
 const iconClass = props.active
     ? "text-white"

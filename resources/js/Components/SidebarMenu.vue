@@ -108,11 +108,11 @@ const location = computed(() => page.props.ziggy.location);
                                 href="#!"
                                 class="text-white font-semibold leading-6 text-sm py-3 px-6 flex items-center gap-x-4 hover:bg-gray-800"
                             >
-                                <img
+                                <!-- <img
                                     src="http://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                                     class="h-8 rounded-full bg-gray-800"
                                     alt=""
-                                />
+                                /> -->
                                 <span>{{ $page.props.auth.user.name }}</span>
                             </a>
                         </template>
