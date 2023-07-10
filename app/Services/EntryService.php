@@ -27,6 +27,10 @@ class EntryService
             'user_id' => $passwordEntryDTO->getUserId(),
         ]);
 
+        // Update the order
+        $fs = resolve('App\Services\FolderService');
+        $passwordEntry->setOrderTo($fs->getLastOrder($passwordEntryDTO->getFolderId()));
+
         // Return the created password entry.
         return $passwordEntry;
     }
