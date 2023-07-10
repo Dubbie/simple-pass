@@ -23,9 +23,9 @@ use Inertia\Inertia;
 Route::get('/', [PagesController::class, 'index'])->name('index');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/dashboard', [PagesController::class, 'dashboard'])->name('dashboard');
 
     Route::delete('/folders/{folder}/destroy', [FolderController::class, 'destroy'])->name('folders.destroy');

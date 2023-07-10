@@ -10,6 +10,10 @@ class PagesController extends Controller
 {
     public function index()
     {
+        if (Auth::check()) {
+            return to_route('dashboard');
+        }
+
         return Inertia::render('Index');
     }
 
