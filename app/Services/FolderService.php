@@ -26,4 +26,9 @@ class FolderService
         // Return the created folder.
         return $folder;
     }
+
+    public function getLastOrder($folderId)
+    {
+        return Folder::find($folderId)->entries()->max('order') + 1;
+    }
 }

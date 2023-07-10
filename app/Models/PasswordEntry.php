@@ -48,6 +48,11 @@ class PasswordEntry extends Model
     public function moveToFolder($folderId)
     {
         $this->folder_id = $folderId;
+
+        // Make sure to add it as the last entry in the folder (based on order column)
+        $fs = resolve('App\Services\FolderService');
+        $this->setOrderTo($fs->getLastOrder($folderId));
+
         $this->save();
     }
 
