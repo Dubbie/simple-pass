@@ -79,4 +79,13 @@ class FolderController extends Controller
 
         return to_route('dashboard')->with('banner', 'Folder deleted successfully');
     }
+
+    public function unused()
+    {
+        /** @var User $user */
+        $user = Auth::user();
+        return Inertia::render('Folder/Show')->with([
+            'entries' => $user->getUnusedEntries(),
+        ]);
+    }
 }

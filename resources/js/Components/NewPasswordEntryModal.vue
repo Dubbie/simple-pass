@@ -16,7 +16,6 @@ const props = defineProps({
     },
     folderId: {
         type: Number,
-        required: true,
     },
 });
 

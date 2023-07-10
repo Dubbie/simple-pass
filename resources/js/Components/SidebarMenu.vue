@@ -86,6 +86,11 @@ const folders = computed(() => page.props.folders.roots);
                                 </li>
                             </template>
                         </template>
+
+                        <li>
+                            <SidebarFolderLink :folder="null" />
+                        </li>
+
                         <li>
                             <LinkButton @click="handleNewFolder"
                                 >+ New folder</LinkButton

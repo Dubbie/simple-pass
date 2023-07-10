@@ -57,4 +57,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(PasswordEntry::class);
     }
+
+    public function getUnusedEntries()
+    {
+        return $this->passwordEntries()->where('folder_id', null)->get();
+    }
 }

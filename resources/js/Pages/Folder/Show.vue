@@ -25,12 +25,14 @@ import { onMounted } from "vue";
 const props = defineProps({
     folder: {
         type: Object,
-        required: true,
+    },
+    entries: {
+        type: Array,
     },
 });
 
 const refs = {
-    entries: ref(props.folder.entries),
+    entries: ref([]),
     showDeleteFolderModal: ref(false),
     showNewFolderModal: ref(false),
     showNewEntryModal: ref(false),
@@ -43,6 +45,8 @@ const refs = {
     selectedEntryId: ref(null),
     newFolder: ref(null),
     isMobile: ref(isMobile()),
+    title: ref("Unused"),
+    folderId: ref(null),
 };
 
 const handleDeleteFolder = () => {
@@ -125,10 +129,22 @@ const handleChange = async (event) => {
 };
 
 watch(props, (newProps) => {
-    refs.entries.value = newProps.folder.entries;
+    if (newProps.folder) {
+        refs.entries.value = newProps.folder.entries;
+    } else {
+        refs.entries.value = newProps.entries;
+    }
 });
 
 onMounted(() => {
+    if (props.folder) {
+        refs.entries.value = props.folder.entries;
+        refs.title = props.folder.name;
+        refs.folderId = props.folder.id;
+    } else {
+        refs.entries.value = props.entries;
+    }
+
     window.addEventListener("resize", () => {
         refs.isMobile.value = isMobile();
     });
@@ -136,14 +152,14 @@ onMounted(() => {
 </script>
 
 <template>
-    <Head :title="folder.name" />
+    <Head :title="refs.title.value" />
 
     <SidebarLayout>
         <template #header>
             <div
                 class="flex flex-col justify-between sm:items-center sm:flex-row"
             >
-                <PageTitle>{{ folder.name }}</PageTitle>
+                <PageTitle>{{ refs.title.value }}</PageTitle>
                 <div class="mt-3 sm:mt-0 flex space-x-3">
                     <PrimaryButton @click="refs.showNewEntryModal.value = true"
                         >New entry</PrimaryButton
@@ -162,7 +178,7 @@ onMounted(() => {
 
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-gray-500">
             <div
-                v-if="folder.entries.length === 0"
+                v-if="refs.entries.length === 0"
                 class="flex items-center justify-center"
             >
                 <EmptyState class="mt-16">
@@ -199,7 +215,6 @@ onMounted(() => {
             </div>
 
             <div v-else>
-                <p>{{ refs.isMobile.value }}</p>
                 <table class="w-full text-sm">
                     <thead class="border-b border-gray-700 text-white">
                         <tr class="text-left">
@@ -325,13 +340,13 @@ onMounted(() => {
 
         <NewFolderModal
             :show="refs.showNewFolderModal.value"
-            :parentId="folder.id"
+            :parentId="refs.folderId.value"
             @close="refs.showNewFolderModal.value = false"
         />
 
         <NewPasswordEntryModal
             :show="refs.showNewEntryModal.value"
-            :folderId="folder.id"
+            :folderId="refs.folderId.value"
             @close="refs.showNewEntryModal.value = false"
         />
 

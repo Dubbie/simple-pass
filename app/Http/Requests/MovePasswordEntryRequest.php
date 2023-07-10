@@ -23,7 +23,7 @@ class MovePasswordEntryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'folder_id' => 'required|exists:folders,id',
+            'folder_id' => 'nullable|exists:folders,id',
             'password_entry_id' => 'required|exists:password_entries,id',
         ];
     }

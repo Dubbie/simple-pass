@@ -20,7 +20,7 @@ const props = defineProps({
 });
 
 const form = useForm({
-    folder_id: "",
+    folder_id: null,
     password_entry_id: null,
 });
 
@@ -38,7 +38,10 @@ const handleSubmission = () => {
 
 watch(props, (newData) => {
     if (newData.entry) {
-        form.folder_id = newData.entry.folder_id.toString();
+        if (form.folder_id) {
+            form.folder_id = newData.entry.folder_id.toString();
+        }
+
         form.password_entry_id = newData.entry.id;
     } else {
         form.folder_id = null;

@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/dashboard', [PagesController::class, 'dashboard'])->name('dashboard');
 
+    Route::get('/unused', [FolderController::class, 'unused'])->name('folders.unused');
     Route::delete('/folders/{folder}/destroy', [FolderController::class, 'destroy'])->name('folders.destroy');
     Route::get('/folders/{folder}', [FolderController::class, 'show'])->name('folders.show');
     Route::post('/folders/store', [FolderController::class, 'store'])->name('folders.store');
