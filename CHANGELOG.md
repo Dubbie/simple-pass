@@ -1,3 +1,14 @@
+## 1.1.0 (2023-07-10)
+
+### Feat
+
+- **folder**: add support for entries without folders
+
+### Fix
+
+- **folder**: deleting a root folder causing error
+- loading for production
+
 ## 1.0.0 (2023-07-10)
 
 ### Feat
