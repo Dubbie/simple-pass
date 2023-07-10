@@ -60,4 +60,8 @@ const getAllFolderOptions = () => {
     return totalOptions;
 }
 
-export {getSizeClasses, copyToClipboard, getPasswordForEntry, getEntryById, getFolderOptions, getAllFolderOptions};
+const isMobile = () => {
+    return window.innerWidth < 768;
+}
+
+export {getSizeClasses, copyToClipboard, getPasswordForEntry, getEntryById, getFolderOptions, getAllFolderOptions, isMobile};

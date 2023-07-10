@@ -19,6 +19,8 @@ import draggable from "vuedraggable";
 import { watch } from "vue";
 import MovePasswordEntryModal from "@/Components/MovePasswordEntryModal.vue";
 import axios from "axios";
+import { isMobile } from "@/common-functions";
+import { onMounted } from "vue";
 
 const props = defineProps({
     folder: {
@@ -40,6 +42,7 @@ const refs = {
     selectedEntry: ref(null),
     selectedEntryId: ref(null),
     newFolder: ref(null),
+    isMobile: ref(isMobile()),
 };
 
 const handleDeleteFolder = () => {
@@ -124,6 +127,12 @@ const handleChange = async (event) => {
 watch(props, (newProps) => {
     refs.entries.value = newProps.folder.entries;
 });
+
+onMounted(() => {
+    window.addEventListener("resize", () => {
+        refs.isMobile.value = isMobile();
+    });
+});
 </script>
 
 <template>
@@ -190,6 +199,7 @@ watch(props, (newProps) => {
             </div>
 
             <div v-else>
+                <p>{{ refs.isMobile.value }}</p>
                 <table class="w-full text-sm">
                     <thead class="border-b border-gray-700 text-white">
                         <tr class="text-left">
@@ -215,6 +225,7 @@ watch(props, (newProps) => {
                         tag="tbody"
                         placeholder="dashed"
                         chosenClass="opacity-50"
+                        :disabled="refs.isMobile.value"
                         @change="handleChange"
                         @end="checkMove"
                     >
