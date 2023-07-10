@@ -160,17 +160,19 @@ onMounted(() => {
                 class="flex flex-col justify-between sm:items-center sm:flex-row"
             >
                 <PageTitle>{{ refs.title.value }}</PageTitle>
-                <div class="mt-3 sm:mt-0 flex space-x-3">
-                    <PrimaryButton @click="refs.showNewEntryModal.value = true"
-                        >New entry</PrimaryButton
-                    >
-                    <LinkButton @click="refs.showNewFolderModal.value = true"
+                <div class="mt-3 sm:mt-0 flex space-x-2">
+                    <LinkButton
+                        color="secondary"
+                        @click="refs.showNewFolderModal.value = true"
                         >New folder</LinkButton
                     >
                     <LinkButton
                         color="secondary"
                         @click="show('showDeleteFolderModal')"
-                        >Delete</LinkButton
+                        >Delete folder</LinkButton
+                    >
+                    <PrimaryButton @click="refs.showNewEntryModal.value = true"
+                        >New entry</PrimaryButton
                     >
                 </div>
             </div>

@@ -24,7 +24,7 @@ const colorClasses = computed(() => {
     return {
         primary: "text-indigo-500 hover:text-indigo-300",
         danger: "text-red-600 hover:text-red-400",
-        secondary: "text-gray-400 hover:text-gray-600",
+        secondary: "text-white hover:text-gray-300",
     }[props.color];
 });
 
