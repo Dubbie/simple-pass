@@ -22,6 +22,7 @@ const handleNewFolder = () => {
 const page = usePage();
 
 const folders = computed(() => page.props.folders.roots);
+const location = computed(() => page.props.ziggy.location);
 </script>
 
 <template>
@@ -88,7 +89,7 @@ const folders = computed(() => page.props.folders.roots);
                         </template>
 
                         <li>
-                            <SidebarFolderLink :folder="null" />
+                            <SidebarFolderLink :folder="null" :key="location" />
                         </li>
 
                         <li>

@@ -129,21 +129,21 @@ const handleChange = async (event) => {
 };
 
 watch(props, (newProps) => {
-    if (newProps.folder) {
-        refs.entries.value = newProps.folder.entries;
-    } else {
-        refs.entries.value = newProps.entries;
-    }
+    updateData();
 });
 
-onMounted(() => {
+const updateData = () => {
     if (props.folder) {
         refs.entries.value = props.folder.entries;
-        refs.title = props.folder.name;
-        refs.folderId = props.folder.id;
+        refs.title.value = props.folder.name;
+        refs.folderId.value = props.folder.id;
     } else {
         refs.entries.value = props.entries;
     }
+};
+
+onMounted(() => {
+    updateData();
 
     window.addEventListener("resize", () => {
         refs.isMobile.value = isMobile();
@@ -178,7 +178,7 @@ onMounted(() => {
 
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-gray-500">
             <div
-                v-if="refs.entries.length === 0"
+                v-if="refs.entries.value.length === 0"
                 class="flex items-center justify-center"
             >
                 <EmptyState class="mt-16">
