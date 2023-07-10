@@ -1,6 +1,6 @@
 # Simple Pass
 
-This project is made to help manage your passwords online securely.
+Introducing our Password Management Project: a simple and secure solution for managing passwords. Say goodbye to the hassle of remembering multiple passwords as our user-friendly interface and robust encryption techniques ensure easy access and protection of your sensitive information. Simplify your digital life and take control of your online security with our password management project.
 
 ## Getting Started
 
