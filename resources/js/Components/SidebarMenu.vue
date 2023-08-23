@@ -8,13 +8,10 @@ import LinkButton from "./Shared/LinkButton.vue";
 import NewFolderModal from "./NewFolderModal.vue";
 import { ref } from "vue";
 import { computed } from "vue";
-import { useForm, usePage } from "@inertiajs/vue3";
-import NestedFolders from "./NestedFolders.vue";
+import { usePage } from "@inertiajs/vue3";
+import { Draggable } from "@he-tree/vue";
 import SidebarFolderLinkNew from "./Shared/SidebarFolderLinkNew.vue";
-
-const form = useForm({
-    newParentId: null,
-});
+import { watch } from "vue";
 
 const refs = {
     showNewFolderModal: ref(false),
@@ -24,34 +21,23 @@ const handleNewFolder = () => {
     refs.showNewFolderModal.value = true;
 };
 
-const handleDrop = (event) => {
-    const hoveredAt = document.elementFromPoint(event.clientX, event.clientY);
-    const folderLink = hoveredAt.closest(".sidebar-folder-link");
-    const originalFolderID = event.dataTransfer.getData("folderID");
+const page = usePage();
+const folders = ref(page.props.folders.roots);
+const location = computed(() => page.props.ziggy.location);
 
-    if (folderLink && folderLink.dataset.folderId !== originalFolderID) {
-        form.newParentId = folderLink.dataset.folderId;
-
-        form.put(
-            route("folders.move", {
-                folder: originalFolderID,
-            }),
-            {
-                onSuccess: () => {
-                    console.log("Moved folder");
-                    form.reset();
-                },
-            }
-        );
-    }
+const handleChange = async () => {
+    await axios.request({
+        url: route("folders.move"),
+        data: {
+            folders: folders.value,
+        },
+        method: "PUT",
+    });
 };
 
-const handleStart = (evt, folder) => {};
-
-const page = usePage();
-
-const folders = computed(() => page.props.folders.roots);
-const location = computed(() => page.props.ziggy.location);
+watch(location, (newLocation) => {
+    folders.value = page.props.folders.roots;
+});
 </script>
 
 <template>
@@ -97,17 +83,32 @@ const location = computed(() => page.props.ziggy.location);
                 <!-- Folders -->
                 <li>
                     <SidebarHeader>Your folders</SidebarHeader>
-                    <div
-                        class="dragContainer"
-                        @drop="handleDrop"
-                        @dragover.prevent
-                        @dragenter.prevent
+
+                    <Draggable
+                        v-model="folders"
+                        children-key="sub_folders"
+                        ref="tree"
+                        node-key="id"
+                        text-key="name"
+                        :watermark="false"
+                        :key="location"
+                        @change="handleChange"
                     >
-                        <NestedFolders
-                            :folders="folders"
-                            @move-folder-start="handleStart"
-                        />
-                    </div>
+                        <template #default="{ element, stat }">
+                            <!-- <FolderGroup :folder="stat.data" /> -->
+                            <SidebarFolderLinkNew
+                                :folder="stat.data"
+                                :key="stat"
+                            />
+                        </template>
+
+                        <template #placeholder>
+                            <div
+                                class="h-8 my-1 bg-gray-700 rounded-lg border border-gray-500"
+                            ></div>
+                        </template>
+                    </Draggable>
+
                     <SidebarFolderLinkNew :folder="null" :key="location" />
                     <LinkButton @click="handleNewFolder"
                         >+ New folder</LinkButton

@@ -2,7 +2,6 @@
 import PageTitle from "@/Components/Shared/PageTitle.vue";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 import { Head, usePage } from "@inertiajs/vue3";
-import NestedFolders from "@/Components/NestedFolders.vue";
 
 const props = defineProps({
     foldersCount: {
@@ -14,8 +13,6 @@ const props = defineProps({
         required: true,
     },
 });
-
-const rootFolders = usePage().props.folders.roots;
 </script>
 
 <template>
@@ -55,12 +52,6 @@ const rootFolders = usePage().props.folders.roots;
                 You can use the sidebar to create your folders where you can
                 store your passwords.
             </p>
-        </div>
-
-        <div class="p-8">
-            <p>Teszt zóna</p>
-
-            <NestedFolders :folders="rootFolders" />
         </div>
     </SidebarLayout>
 </template>

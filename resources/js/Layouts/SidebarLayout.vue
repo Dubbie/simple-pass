@@ -30,7 +30,7 @@ const handleMobileMenu = () => {
 
         <div>
             <!-- Sidebar -->
-            <AppSidebar @close="handleMobileMenu"></AppSidebar>
+            <AppSidebar @close="handleMobileMenu" />
 
             <!-- Page Content -->
             <div class="xl:pl-72">
@@ -50,9 +50,9 @@ const handleMobileMenu = () => {
             </div>
         </div>
 
-        <SidebarMobileMenu
+        <!-- <SidebarMobileMenu
             :showMobileMenu="showingMobileMenu"
             @close="handleMobileMenu"
-        ></SidebarMobileMenu>
+        /> -->
     </div>
 </template>

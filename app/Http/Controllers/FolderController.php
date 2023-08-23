@@ -97,10 +97,32 @@ class FolderController extends Controller
         ]);
     }
 
-    public function move(Folder $folder, MoveFolderRequest $request)
+    public function move(MoveFolderRequest $request)
     {
         $data = $request->validated();
 
-        $folder->updateParent($data['newParentId']);
+        foreach ($data['folders'] as $i => $folderData) {
+            $this->checkFolder($folderData, null, $i);
+        }
+    }
+
+    private function checkFolder($folder, $parent, $index)
+    {
+        /** @var User $currentUser */
+        $currentUser = Auth::user();
+        $currentFolder = $currentUser->folders()->find($folder['id']);
+        $currentFolder->updateOrder($index);
+
+        if ($parent) {
+            if ($currentFolder->parent_id !== $parent['id']) {
+                $currentFolder->updateParent($parent['id']);
+            }
+        } else {
+            $currentFolder->updateParent(null);
+        }
+
+        foreach ($folder['sub_folders'] as $i => $subFolder) {
+            $this->checkFolder($subFolder, $folder, $i);
+        }
     }
 }

@@ -30,7 +30,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/unused', [FolderController::class, 'unused'])->name('folders.unused');
     Route::delete('/folders/{folder}/destroy', [FolderController::class, 'destroy'])->name('folders.destroy');
-    Route::put('/folders/{folder}/move', [FolderController::class, 'move'])->name('folders.move');
+    Route::put('/folders/move', [FolderController::class, 'move'])->name('folders.move');
     Route::get('/folders/{folder}', [FolderController::class, 'show'])->name('folders.show');
     Route::post('/folders/store', [FolderController::class, 'store'])->name('folders.store');
 

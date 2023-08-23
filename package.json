@@ -18,6 +18,7 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
+        "@he-tree/vue": "^2.4.2",
         "vuedraggable": "^4.1.0"
     }
 }

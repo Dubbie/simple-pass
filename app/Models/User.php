@@ -45,7 +45,7 @@ class User extends Authenticatable
 
     public function folders()
     {
-        return $this->hasMany(Folder::class);
+        return $this->hasMany(Folder::class)->orderBy('order');
     }
 
     public function getRootFolders()

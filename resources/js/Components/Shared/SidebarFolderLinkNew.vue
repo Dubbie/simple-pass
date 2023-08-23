@@ -27,7 +27,7 @@ const iconClasses = computed(() => {
 });
 
 const linkBaseClasses =
-    "sidebar-folder-link leading-6 text-sm font-semibold gap-x-3 flex px-2 py-1 my-1 rounded-md group";
+    "sidebar-folder-link leading-6 text-sm font-semibold gap-x-3 flex p-2 rounded-md group";
 const linkExtraClasses = active.value
     ? "text-white"
     : "text-gray-500 hover:text-white hover:bg-gray-800";

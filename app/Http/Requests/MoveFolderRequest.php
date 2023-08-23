@@ -22,7 +22,7 @@ class MoveFolderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'newParentId' => 'required'
+            'folders' => 'required'
         ];
     }
 }

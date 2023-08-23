@@ -17,7 +17,7 @@ class Folder extends Model
 
     public function subFolders()
     {
-        return $this->hasMany(Folder::class, 'parent_id', 'id');
+        return $this->hasMany(Folder::class, 'parent_id', 'id')->orderBy('order');
     }
 
     public function parentFolder()
@@ -32,7 +32,7 @@ class Folder extends Model
 
     public function entries()
     {
-        return $this->hasMany(PasswordEntry::class)->orderBy('order', 'ASC');
+        return $this->hasMany(PasswordEntry::class)->orderBy('order');
     }
 
     public function withEntries()
@@ -43,6 +43,12 @@ class Folder extends Model
     public function updateParent($newParentId)
     {
         $this->parent_id = $newParentId;
+        $this->save();
+    }
+
+    public function updateOrder($order)
+    {
+        $this->order = $order;
         $this->save();
     }
 
