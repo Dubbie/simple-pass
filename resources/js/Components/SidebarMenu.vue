@@ -83,7 +83,10 @@ const location = computed(() => page.props.ziggy.location);
                                 :key="folder.id"
                             >
                                 <li>
-                                    <SidebarFolderLink :folder="folder" />
+                                    <SidebarFolderLink
+                                        :folder="folder"
+                                        :key="location"
+                                    />
                                 </li>
                             </template>
                         </template>
