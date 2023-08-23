@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DTOs\FolderDTO;
+use App\Http\Requests\DeleteFolderRequest;
 use App\Http\Requests\StoreFolderRequest;
 use App\Models\Folder;
 use App\Services\FolderService;
@@ -58,8 +59,14 @@ class FolderController extends Controller
         return Inertia::render('Folder/Show', ['folder' => $folder->withEntries()]);
     }
 
-    public function destroy(Folder $folder)
+    public function destroy(Folder $folder, DeleteFolderRequest $request)
     {
+        $data = $request->validated();
+
+        if ($data['moveFoldersOutside']) {
+            $folder->updateSubfoldersParent($folder->parent_id);
+        }
+
         // Check if the authenticated user has permission to delete the folder
         /** @var User $user */
         $user = Auth::user();

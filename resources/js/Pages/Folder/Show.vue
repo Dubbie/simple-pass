@@ -21,6 +21,7 @@ import MovePasswordEntryModal from "@/Components/MovePasswordEntryModal.vue";
 import axios from "axios";
 import { isMobile } from "@/common-functions";
 import { onMounted } from "vue";
+import DeleteFolderModal from "@/Components/DeleteFolderModal.vue";
 
 const props = defineProps({
     folder: {
@@ -47,14 +48,6 @@ const refs = {
     isMobile: ref(isMobile()),
     title: ref("Unused"),
     folderId: ref(null),
-};
-
-const handleDeleteFolder = () => {
-    router.delete(route("folders.destroy", props.folder), {
-        onSuccess: () => {
-            hide("showDeleteFolderModal");
-        },
-    });
 };
 
 const handleDeleteEntry = () => {
@@ -318,16 +311,11 @@ onMounted(() => {
             </div>
         </div>
 
-        <DeleteModal
+        <DeleteFolderModal
+            :folder="folder"
             :show="refs.showDeleteFolderModal.value"
-            :callback="handleDeleteFolder"
             @close="hide('showDeleteFolderModal')"
-        >
-            <template #title>Delete Folder</template>
-            <template #body
-                >Are you sure you want to delete this folder?</template
-            >
-        </DeleteModal>
+        />
 
         <DeleteModal
             :show="refs.showDeleteEntryModal.value"

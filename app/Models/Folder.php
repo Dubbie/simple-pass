@@ -40,13 +40,23 @@ class Folder extends Model
         return Folder::with('entries')->find($this->id);
     }
 
+    public function updateSubfoldersParent($newParentId)
+    {
+        $subFolders = $this->subFolders;
+
+        foreach ($subFolders as $subFolder) {
+            $subFolder->parent_id = $newParentId;
+            $subFolder->save();
+
+            $subFolder->updateSubfoldersParent($subFolder->id);
+        }
+    }
+
     protected static function booted()
     {
         static::deleting(function ($folder) {
             // Move the entries to the parent folder.
-            if ($folder->parent_id) {
-                $folder->entries()->update(['folder_id' => $folder->parent_id]);
-            }
+            $folder->entries()->update(['folder_id' => $folder->parent_id]);
         });
     }
 }
