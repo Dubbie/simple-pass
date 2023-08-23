@@ -34,37 +34,41 @@ const linkExtraClasses = active.value
 </script>
 
 <template>
-    <template v-if="folder">
-        <Link
-            :class="[linkBaseClasses, linkExtraClasses]"
-            :href="route('folders.show', folder)"
-            :data-folder-id="props.folder.id"
-            :data-folder-name="props.folder.name"
-        >
-            <span :class="iconClasses">
-                {{ folder.name.substr(0, 1).toUpperCase() }}
+    <div>
+        <template v-if="folder">
+            <Link
+                :class="[linkBaseClasses, linkExtraClasses]"
+                :href="route('folders.show', folder)"
+                :data-folder-id="props.folder.id"
+                :data-folder-name="props.folder.name"
+            >
+                <span :class="iconClasses">
+                    {{ folder.name.substr(0, 1).toUpperCase() }}
+                </span>
+                <span>{{ folder.name }}</span>
+            </Link>
+
+            <span v-if="folder.sub_folders.length > 0" class="block ml-4 mt-1">
+                <ul class="space-y-1">
+                    <template v-for="subFolder in folder.sub_folders">
+                        <li>
+                            <SidebarFolderLink
+                                :key="subFolder.id"
+                                :folder="subFolder"
+                            />
+                        </li>
+                    </template>
+                </ul>
             </span>
-            <span>{{ folder.name }}</span>
-        </Link>
+        </template>
 
-        <span v-if="folder.sub_folders.length > 0" class="block ml-4 mt-1">
-            <ul class="space-y-1">
-                <template v-for="subFolder in folder.sub_folders">
-                    <li>
-                        <SidebarFolderLink :folder="subFolder" />
-                    </li>
-                </template>
-            </ul>
-        </span>
-    </template>
-
-    <template v-else>
-        <Link
-            :class="[linkBaseClasses, linkExtraClasses]"
-            :href="route('folders.unused')"
-        >
-            <span :class="iconClasses">O</span>
-            <span>Others</span>
-        </Link>
-    </template>
+        <template v-else>
+            <Link
+                :class="[linkBaseClasses, linkExtraClasses]"
+                :href="route('folders.unused')"
+            >
+                <span>Not organized</span>
+            </Link>
+        </template>
+    </div>
 </template>

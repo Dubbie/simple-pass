@@ -7,9 +7,14 @@ import SidebarHeader from "@/Components/Shared/SidebarHeader.vue";
 import LinkButton from "./Shared/LinkButton.vue";
 import NewFolderModal from "./NewFolderModal.vue";
 import { ref } from "vue";
-import SidebarFolderLink from "./SidebarFolderLink.vue";
 import { computed } from "vue";
-import { usePage } from "@inertiajs/vue3";
+import { useForm, usePage } from "@inertiajs/vue3";
+import NestedFolders from "./NestedFolders.vue";
+import SidebarFolderLinkNew from "./Shared/SidebarFolderLinkNew.vue";
+
+const form = useForm({
+    newParentId: null,
+});
 
 const refs = {
     showNewFolderModal: ref(false),
@@ -18,6 +23,30 @@ const refs = {
 const handleNewFolder = () => {
     refs.showNewFolderModal.value = true;
 };
+
+const handleDrop = (event) => {
+    const hoveredAt = document.elementFromPoint(event.clientX, event.clientY);
+    const folderLink = hoveredAt.closest(".sidebar-folder-link");
+    const originalFolderID = event.dataTransfer.getData("folderID");
+
+    if (folderLink && folderLink.dataset.folderId !== originalFolderID) {
+        form.newParentId = folderLink.dataset.folderId;
+
+        form.put(
+            route("folders.move", {
+                folder: originalFolderID,
+            }),
+            {
+                onSuccess: () => {
+                    console.log("Moved folder");
+                    form.reset();
+                },
+            }
+        );
+    }
+};
+
+const handleStart = (evt, folder) => {};
 
 const page = usePage();
 
@@ -67,40 +96,28 @@ const location = computed(() => page.props.ziggy.location);
 
                 <!-- Folders -->
                 <li>
-                    <ul class="space-y-1 -mx-2">
-                        <li>
-                            <SidebarHeader>Your folders</SidebarHeader>
-                        </li>
-                        <p
-                            v-if="folders.length == 0"
-                            class="text-gray-600 font-semibold text-sm"
-                        >
-                            No Folders
-                        </p>
-                        <template v-else>
-                            <template
-                                v-for="folder in folders"
-                                :key="folder.id"
-                            >
-                                <li>
-                                    <SidebarFolderLink
-                                        :folder="folder"
-                                        :key="location"
-                                    />
-                                </li>
-                            </template>
-                        </template>
-
-                        <li>
-                            <SidebarFolderLink :folder="null" :key="location" />
-                        </li>
-
-                        <li>
-                            <LinkButton @click="handleNewFolder"
-                                >+ New folder</LinkButton
-                            >
-                        </li>
-                    </ul>
+                    <SidebarHeader>Your folders</SidebarHeader>
+                    <div
+                        class="dragContainer"
+                        @drop="handleDrop"
+                        @dragover.prevent
+                        @dragenter.prevent
+                    >
+                        <NestedFolders
+                            :folders="folders"
+                            @move-folder-start="handleStart"
+                        />
+                    </div>
+                    <SidebarFolderLinkNew :folder="null" :key="location" />
+                    <LinkButton @click="handleNewFolder"
+                        >+ New folder</LinkButton
+                    >
+                    <p
+                        v-if="folders.length == 0"
+                        class="text-gray-600 font-semibold text-sm"
+                    >
+                        No Folders
+                    </p>
                 </li>
 
                 <!-- User -->

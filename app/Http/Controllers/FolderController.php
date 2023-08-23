@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DTOs\FolderDTO;
 use App\Http\Requests\DeleteFolderRequest;
+use App\Http\Requests\MoveFolderRequest;
 use App\Http\Requests\StoreFolderRequest;
 use App\Models\Folder;
 use App\Services\FolderService;
@@ -94,5 +95,12 @@ class FolderController extends Controller
         return Inertia::render('Folder/Show')->with([
             'entries' => $user->getUnusedEntries(),
         ]);
+    }
+
+    public function move(Folder $folder, MoveFolderRequest $request)
+    {
+        $data = $request->validated();
+
+        $folder->updateParent($data['newParentId']);
     }
 }

@@ -40,6 +40,12 @@ class Folder extends Model
         return Folder::with('entries')->find($this->id);
     }
 
+    public function updateParent($newParentId)
+    {
+        $this->parent_id = $newParentId;
+        $this->save();
+    }
+
     public function updateSubfoldersParent($newParentId)
     {
         $subFolders = $this->subFolders;
