@@ -41,11 +41,13 @@ const options = ref([]);
 
 watch(props, (newData) => {
     if (newData.parentId) {
+        updateOptions();
+
         form.parent_id = newData.parentId.toString();
     }
 });
 
-onMounted(() => {
+const updateOptions = () => {
     let totalOptions = [];
     let depth = 0;
     usePage().props.folders.roots.forEach((element) => {
@@ -53,6 +55,10 @@ onMounted(() => {
     });
 
     options.value = totalOptions;
+};
+
+onMounted(() => {
+    updateOptions();
 });
 </script>
 
