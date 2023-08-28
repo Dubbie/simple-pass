@@ -113,12 +113,6 @@ watch(location, (newLocation) => {
                     <LinkButton @click="handleNewFolder"
                         >+ New folder</LinkButton
                     >
-                    <p
-                        v-if="folders.length == 0"
-                        class="text-gray-600 font-semibold text-sm"
-                    >
-                        No Folders
-                    </p>
                 </li>
 
                 <!-- User -->
