@@ -209,8 +209,8 @@ onMounted(() => {
                 </EmptyState>
             </div>
 
-            <div v-else>
-                <table class="w-full text-sm">
+            <div class="block max-w-full" v-else>
+                <table class="text-sm w-full table-fixed">
                     <thead class="border-b border-gray-700 text-white">
                         <tr class="text-left">
                             <th class="p-3 font-semibold sm:pl-0">Title</th>
@@ -223,7 +223,9 @@ onMounted(() => {
                             <th class="p-3 font-semibold hidden md:table-cell">
                                 Notes
                             </th>
-                            <th class="p-3 font-semibold hidden md:table-cell">
+                            <th
+                                class="p-3 font-semibold text-center hidden md:table-cell"
+                            >
                                 Modified
                             </th>
                             <th class="p-3 font-semibold sm:pr-0"></th>
@@ -250,13 +252,15 @@ onMounted(() => {
                                 <td class="p-3 hidden md:table-cell">
                                     {{ entry.username }}
                                 </td>
-                                <td class="p-3 hidden md:table-cell">
+                                <td class="p-3 hidden truncate md:table-cell">
                                     {{ entry.url }}
                                 </td>
-                                <td class="p-3 hidden md:table-cell">
+                                <td class="p-3 hidden truncate md:table-cell">
                                     {{ entry.notes }}
                                 </td>
-                                <td class="p-3 hidden md:table-cell">
+                                <td
+                                    class="p-3 hidden text-center md:table-cell"
+                                >
                                     {{ entry.formatted_modified_at }}
                                 </td>
                                 <td class="p-3 sm:pr-0">
