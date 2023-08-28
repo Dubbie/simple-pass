@@ -64,6 +64,23 @@ class Folder extends Model
         }
     }
 
+    public function deleteSubfolders()
+    {
+        if ($this->subFolders()->count() > 0) {
+            foreach ($this->subFolders as $subFolder) {
+                $subFolder->delete();
+
+                $subFolder->deleteSubfolders();
+            }
+        }
+    }
+
+    public function deleteEntries()
+    {
+        $ids = $this->entries->pluck('id')->toArray();
+        PasswordEntry::whereIn('id', $ids)->delete();
+    }
+
     protected static function booted()
     {
         static::deleting(function ($folder) {

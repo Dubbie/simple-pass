@@ -7,6 +7,7 @@ use App\Http\Requests\DeleteFolderRequest;
 use App\Http\Requests\MoveFolderRequest;
 use App\Http\Requests\StoreFolderRequest;
 use App\Models\Folder;
+use App\Models\PasswordEntry;
 use App\Services\FolderService;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -64,10 +65,6 @@ class FolderController extends Controller
     {
         $data = $request->validated();
 
-        if ($data['moveFoldersOutside']) {
-            $folder->updateSubfoldersParent($folder->parent_id);
-        }
-
         // Check if the authenticated user has permission to delete the folder
         /** @var User $user */
         $user = Auth::user();
@@ -78,7 +75,20 @@ class FolderController extends Controller
             ]);
         }
 
+        if ($data['moveFoldersOutside']) {
+            $folder->updateSubfoldersParent($folder->parent_id);
+        } else {
+            // This helps move sub entries to the top level, where we can delete them
+            $folder->deleteSubfolders();
+
+            // Now we can delete them all
+            $folder->deleteEntries();
+        }
+
+        // Helper for redirection
         $parentFolder = $folder->parentFolder;
+
+        // On deleting event moves Entries to parent folder
         $folder->delete();
 
         if ($parentFolder) {
