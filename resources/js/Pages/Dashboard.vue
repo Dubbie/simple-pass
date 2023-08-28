@@ -1,7 +1,10 @@
 <script setup>
+import LinkButton from "@/Components/Shared/LinkButton.vue";
 import PageTitle from "@/Components/Shared/PageTitle.vue";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
-import { Head, usePage } from "@inertiajs/vue3";
+import KeepassXMLModal from "@/Components/KeepassXMLModal.vue";
+import { Head } from "@inertiajs/vue3";
+import { ref } from "vue";
 
 const props = defineProps({
     foldersCount: {
@@ -13,6 +16,10 @@ const props = defineProps({
         required: true,
     },
 });
+
+const refs = {
+    showKeepassXMLModal: ref(false),
+};
 </script>
 
 <template>
@@ -52,6 +59,21 @@ const props = defineProps({
                 You can use the sidebar to create your folders where you can
                 store your passwords.
             </p>
+
+            <h3 class="mt-8 font-bold">Migrate existing database</h3>
+            <p class="text-sm text-gray-400">
+                Please choose your method below.
+            </p>
+            <div>
+                <LinkButton @click="refs.showKeepassXMLModal.value = true"
+                    >KeePass XML</LinkButton
+                >
+            </div>
         </div>
+
+        <KeepassXMLModal
+            :show="refs.showKeepassXMLModal.value"
+            @close="refs.showKeepassXMLModal.value = false"
+        />
     </SidebarLayout>
 </template>

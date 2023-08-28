@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FolderController;
+use App\Http\Controllers\KeepassController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PasswordEntryController;
 use App\Http\Controllers\ProfileController;
@@ -42,6 +43,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/password-entries/{passwordEntry}/update', [PasswordEntryController::class, 'update'])->name('password-entries.update');
     Route::get('/password-entries/{passwordEntry}', [PasswordEntryController::class, 'show'])->name('password-entries.show');
     Route::post('/password-entries/store', [PasswordEntryController::class, 'store'])->name('password-entries.store');
+
+    Route::post('/migrate/keepass/xml', [KeepassController::class, 'migrateXml'])->name('migrate.keepass.xml');
 
     Route::get('/search', [SearchController::class, 'find'])->name('search');
 });
