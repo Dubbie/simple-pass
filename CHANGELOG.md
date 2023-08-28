@@ -1,3 +1,14 @@
+## 1.3.0 (2023-08-28)
+
+### Feat
+
+- **Migrations**: add support for KeePass XML importing
+
+### Fix
+
+- **Folders**: folder deleting working wrong
+- **Folders**: no folders message
+
 ## 1.2.0 (2023-08-23)
 
 ### Feat
