@@ -213,7 +213,8 @@ onMounted(() => {
                 <table class="text-sm w-full table-fixed">
                     <thead class="border-b border-gray-700 text-white">
                         <tr class="text-left">
-                            <th class="p-3 font-semibold sm:pl-0">Title</th>
+                            <th class="p-3 w-12 sm:pl-0"></th>
+                            <th class="p-3 font-semibold">Title</th>
                             <th class="p-3 font-semibold hidden md:table-cell">
                                 Username
                             </th>
@@ -237,6 +238,7 @@ onMounted(() => {
                         tag="tbody"
                         placeholder="dashed"
                         chosenClass="opacity-50"
+                        handle=".handle"
                         :disabled="refs.isMobile.value"
                         @change="handleChange"
                         @end="checkMove"
@@ -246,7 +248,27 @@ onMounted(() => {
                                 class="hover:bg-gray-800 group"
                                 :data-entry-id="entry.id"
                             >
-                                <td class="p-3 text-white font-medium sm:pl-0">
+                                <td class="p-3 text-white font-medium">
+                                    <span
+                                        class="handle cursor-pointer text-white/50"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                            class="w-6 h-6"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                                            />
+                                        </svg>
+                                    </span>
+                                </td>
+                                <td class="p-3 text-white font-medium truncate">
                                     {{ entry.title }}
                                 </td>
                                 <td class="p-3 hidden md:table-cell">
@@ -259,7 +281,7 @@ onMounted(() => {
                                     {{ entry.notes }}
                                 </td>
                                 <td
-                                    class="p-3 hidden text-center md:table-cell"
+                                    class="p-3 hidden text-center truncate md:table-cell"
                                 >
                                     {{ entry.formatted_modified_at }}
                                 </td>
