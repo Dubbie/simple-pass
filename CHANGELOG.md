@@ -1,3 +1,10 @@
+## 1.4.0 (2023-09-09)
+
+### Feat
+
+- **Folders**: add foldable menu
+- **Entries**: add handle to entries to help dragging
+
 ## 1.3.0 (2023-08-28)
 
 ### Feat
