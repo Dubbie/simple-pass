@@ -4,13 +4,13 @@ import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 import Dropdown from "@/Components/Dropdown.vue";
 import DropdownLink from "@/Components/DropdownLink.vue";
 import SidebarHeader from "@/Components/Shared/SidebarHeader.vue";
-import LinkButton from "./Shared/LinkButton.vue";
-import NewFolderModal from "./NewFolderModal.vue";
+import LinkButton from "@/Components/Shared/LinkButton.vue";
+import NewFolderModal from "@/Components/NewFolderModal.vue";
 import { ref } from "vue";
 import { computed } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import { Draggable } from "@he-tree/vue";
-import SidebarFolderLinkNew from "./Shared/SidebarFolderLinkNew.vue";
+import SidebarFolderLink from "@/Components/SidebarFolderLink.vue";
 import { watch } from "vue";
 
 const refs = {
@@ -82,7 +82,12 @@ watch(location, (newLocation) => {
 
                 <!-- Folders -->
                 <li>
-                    <SidebarHeader>Your folders</SidebarHeader>
+                    <div class="flex items-center justify-between">
+                        <SidebarHeader>Your folders</SidebarHeader>
+                        <LinkButton size="xs" @click="handleNewFolder"
+                            >New folder</LinkButton
+                        >
+                    </div>
 
                     <Draggable
                         v-model="folders"
@@ -91,15 +96,20 @@ watch(location, (newLocation) => {
                         node-key="id"
                         text-key="name"
                         :watermark="false"
+                        :default-open="false"
                         :key="location"
                         @change="handleChange"
                     >
                         <template #default="{ element, stat }">
                             <!-- <FolderGroup :folder="stat.data" /> -->
-                            <SidebarFolderLinkNew
-                                :folder="stat.data"
-                                :key="stat"
-                            />
+                            <div class="flex items-center justify-between">
+                                <SidebarFolderLink
+                                    :folder="stat.data"
+                                    :key="stat"
+                                    :open="stat.open"
+                                    @toggle-open="stat.open = !stat.open"
+                                />
+                            </div>
                         </template>
 
                         <template #placeholder>
@@ -109,10 +119,11 @@ watch(location, (newLocation) => {
                         </template>
                     </Draggable>
 
-                    <SidebarFolderLinkNew :folder="null" :key="location" />
-                    <LinkButton @click="handleNewFolder"
-                        >+ New folder</LinkButton
-                    >
+                    <SidebarFolderLink
+                        :folder="null"
+                        :key="location"
+                        :open="false"
+                    />
                 </li>
 
                 <!-- User -->

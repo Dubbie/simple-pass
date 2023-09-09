@@ -1,12 +1,19 @@
 <script setup>
 import { Link } from "@inertiajs/vue3";
 import { computed } from "vue";
+import SidebarFolderArrow from "@/Components/SidebarFolderArrow.vue";
 
 const props = defineProps({
     folder: {
         type: Object,
     },
+    open: {
+        type: Boolean,
+        required: true,
+    },
 });
+
+const emit = defineEmits(["toggle-open"]);
 
 const active = computed(() => {
     if (props.folder) {
@@ -27,48 +34,40 @@ const iconClasses = computed(() => {
 });
 
 const linkBaseClasses =
-    "sidebar-folder-link leading-6 text-sm font-semibold gap-x-3 flex p-2 rounded-md group";
+    "sidebar-folder-link leading-6 text-sm font-semibold gap-x-3 flex w-full p-2 rounded-md group";
 const linkExtraClasses = active.value
     ? "text-white"
     : "text-gray-500 hover:text-white hover:bg-gray-800";
 </script>
 
 <template>
-    <div>
-        <template v-if="folder">
-            <Link
-                :class="[linkBaseClasses, linkExtraClasses]"
-                :href="route('folders.show', folder)"
-                :data-folder-id="props.folder.id"
-                :data-folder-name="props.folder.name"
-            >
-                <span :class="iconClasses">
-                    {{ folder.name.substr(0, 1).toUpperCase() }}
-                </span>
-                <span>{{ folder.name }}</span>
-            </Link>
+    <Link
+        :class="[linkBaseClasses, linkExtraClasses]"
+        :href="route('folders.show', folder)"
+        :data-folder-id="props.folder.id"
+        :data-folder-name="props.folder.name"
+        v-if="props.folder"
+    >
+        <span :class="iconClasses">
+            {{ folder.name.substr(0, 1).toUpperCase() }}
+        </span>
+        <span class="truncate text-ellipsis">{{ folder.name }}</span>
 
-            <span v-if="folder.sub_folders.length > 0" class="block ml-4 mt-1">
-                <ul class="space-y-1">
-                    <template v-for="subFolder in folder.sub_folders">
-                        <li>
-                            <SidebarFolderLink
-                                :key="subFolder.id"
-                                :folder="subFolder"
-                            />
-                        </li>
-                    </template>
-                </ul>
-            </span>
-        </template>
+        <div class="flex-grow flex items-center justify-end">
+            <SidebarFolderArrow
+                :open="open"
+                @click.prevent="$emit('toggle-open')"
+                v-if="folder.sub_folders.length > 0"
+            />
+        </div>
+    </Link>
 
-        <template v-else>
-            <Link
-                :class="[linkBaseClasses, linkExtraClasses]"
-                :href="route('folders.unused')"
-            >
-                <span>Not organized</span>
-            </Link>
-        </template>
-    </div>
+    <Link
+        :class="[linkBaseClasses, linkExtraClasses]"
+        :href="route('folders.unused')"
+        v-else
+    >
+        <span :class="iconClasses">N</span>
+        <span>Not organized</span>
+    </Link>
 </template>
